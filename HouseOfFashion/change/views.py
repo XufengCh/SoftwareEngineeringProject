@@ -7,5 +7,5 @@ from django.template import loader
 
 def homepage(request):
     # template = loader.get_template('change/homepage.html')
-    return render(request, 'change/homepage.html')
+    return render(request, 'change/index.html')
 # Create your views here.
