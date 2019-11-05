@@ -6,9 +6,9 @@
     letter-spacing: 0.4px;
 }
 
-body {
+/*body {
     background-size: cover;
-}
+}*/
 
 #navbarSelf {
     padding: 20px;
@@ -16,10 +16,14 @@ body {
 }
 
 #body-window {
+    height: auto;
+}
+
+#body-window, #clothes {
     background: rgba(255, 255, 255, 0.58);
 }
 
-.person-wrapper {
+.photo-wrapper {
     border-style: dashed;
     border-width: 2px;
     position: relative;
@@ -27,7 +31,7 @@ body {
     padding-bottom: 133%;
 }
 
-.person {
+.photo {
     position : absolute;
     top : 0; left : 0; right : 0; bottom : 0;
 }
