@@ -33,7 +33,8 @@
 <body background="{% static 'change/assets/background.png' %}">
 <nav class="navbar navbar-expand-lg navbar-light" id="navbarSelf">
     <a class="navbar-brand" href="#">
-        <img alt="" class="d-inline-block align-top" height="30" src="{% static 'change/assets/bookmark.ico' %}" width="30">
+        <img alt="" class="d-inline-block align-top" height="30" src="{% static 'change/assets/bookmark.ico' %}"
+             width="30">
     </a>
 
     <button aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
@@ -64,13 +65,22 @@
     </div>
 </nav>
 
-<!-- 照片及评分区 -->
-<div id="body-window">
+<div class="row">
+    <!-- 照片及评分区 -->
+    <div class="container col-md-3 offset-md-1 text-center" id="body-window">
+        <!-- photo of user -->
+        <div class="person-wrapper rounded my-2">
+            <div class="person">
 
-</div>
+            </div>
+        </div>
+        <!-- button -->
+        <button type="button" class="btn btn-primary my-2">评分</button>
+    </div>
 
-<div id="clothes">
+    <div id="clothes">
 
+    </div>
 </div>
 
 </body>

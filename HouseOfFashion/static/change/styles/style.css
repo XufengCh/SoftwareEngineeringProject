@@ -12,5 +12,22 @@ body {
 
 #navbarSelf {
     padding: 20px;
-    background-color: rgba(138,138,138,0.32);
+    background-color: rgba(138, 138, 138, 0.32);
+}
+
+#body-window {
+    background: rgba(255, 255, 255, 0.58);
+}
+
+.person-wrapper {
+    border-style: dashed;
+    border-width: 2px;
+    position: relative;
+    width: 100%;
+    padding-bottom: 133%;
+}
+
+.person {
+    position : absolute;
+    top : 0; left : 0; right : 0; bottom : 0;
 }
