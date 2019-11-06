@@ -6,9 +6,14 @@
     letter-spacing: 0.4px;
 }
 
-/*body {
+.mini-title {
+    color: #C64B57;
+    font-weight: 700;
+}
+/* 这里为什么注释掉了？这里是用来做图片随窗口大小延展的 */
+body {
     background-size: cover;
-}*/
+}
 
 #navbarSelf {
     padding: 20px;
@@ -17,6 +22,17 @@
 
 #body-window {
     height: auto;
+    padding: 20px;
+    padding-top: 40px;
+}
+
+#clothes {
+    padding: 30px;
+    margin-left: 40px;
+}
+
+#main-body {
+    margin-top: 20px;
 }
 
 #body-window, #clothes {
@@ -24,14 +40,31 @@
 }
 
 .photo-wrapper {
+    position: relative;
+    width: 95%;
+    /* padding-bottom: 110%; */
+    background-color: rgb(255, 255, 255);
+}
+
+#display {
+    background-color: rgb(255, 255, 255,0);
     border-style: dashed;
     border-width: 2px;
-    position: relative;
+    color: rgb(0, 0, 0,0.3);
     width: 100%;
-    padding-bottom: 133%;
+    /* padding-bottom: 140%; */
 }
 
 .photo {
     position : absolute;
     top : 0; left : 0; right : 0; bottom : 0;
+}
+
+#eval-btn {
+    width: 132px;
+    height: 56px;
+    border-color: #FDA59E;
+
+    background: #FDA59E;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
