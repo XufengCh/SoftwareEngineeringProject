@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    // 用于标识当前选中图片的两个变量
+    var clothe_selected = 0;
+    var body_selected = 0;
+    // 用于规定可选栏位最大最小值的两个常量
+    const clothe_max = 5;
+    const body_max = 5;
     // DEBUG: 在figure-img的on-click函数里调用这个函数会调用到爆栈
     // 原因不清楚先这么处理
     $('.upload-img').on('click', function (e) {
@@ -24,6 +30,34 @@ $(document).ready(function () {
             //将图片路径存入src中，显示出图片
             $img.attr("src", objUrl); 
         }
+    });
+
+    //在点击左右按钮时切换当前选中的衣物/模特图片
+    //函数绑定在类arr-btn上，再根据组件的id进行左右位移操作，为对应的图片添加selected类
+    $(".arr-btn").on("click", function(){
+        var arr_type = $(this).attr('id');
+        // alert(arr_type);
+        $('#clothe-'+clothe_selected).removeClass('selected');
+        $('#body-'+body_selected).removeClass('selected');
+        switch (arr_type) {
+            case 'clothes-left-arrow':
+                if(clothe_selected > 0) clothe_selected--;
+                break;
+            case 'clothes-right-arrow':
+                if(clothe_selected < clothe_max-1) clothe_selected++;
+                break;
+            case 'bodies-left-arrow':
+                if(body_selected > 0) body_selected--;
+                break;
+            case 'bodies-right-arrow':
+                if(body_selected < body_max-1) body_selected++;
+                break;
+            default:
+                alert("有人改了我的箭头ID");
+                break;
+        }
+        $('#clothe-'+clothe_selected).addClass('selected');
+        $('#body-'+body_selected).addClass('selected');
     });
 });
 

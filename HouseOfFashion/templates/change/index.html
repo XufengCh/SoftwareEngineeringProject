@@ -93,9 +93,10 @@
             <!-- 用户在这里上传衣物 -->
             <div class="row justify-content-center" id="clothes">
                 <!-- 选择衣物-左箭头 -->
-                <button type="button" class="btn btn-light align-self-center"> <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>
+                <button id="clothes-left-arrow" type="button" class="btn btn-light align-self-center arr-btn">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>
 
-                <div id="clothe-0" class="col-md-2 p-2">
+                <div id="clothe-0" class="col-md-2 p-2 selected">
                     <div class="photo-wrapper closet rounded my-2">
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
@@ -150,7 +151,8 @@
                     </div>
                 </div>
                 <!-- 选择衣物-右箭头 -->
-                <button type="button" class="btn btn-light align-self-center"> <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
+                <button type="button" id="clothes-right-arrow"  class="btn btn-light align-self-center arr-btn">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
             </div>
 
             <!-- 用户在这里上传半身像 -->
@@ -159,9 +161,10 @@
             </span>
             <div class="row justify-content-center" id="bodies">
                 <!-- 选择半身像-左箭头 -->
-                <button type="button" class="btn btn-light align-self-center"> <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>
+                <button type="button" id="bodies-left-arrow" class="btn btn-light align-self-center arr-btn">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>
 
-                <div id="body-0" class="col-md-2 p-2">
+                <div id="body-0" class="col-md-2 p-2 selected">
                     <div class="photo-wrapper closet rounded my-2">
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
@@ -217,7 +220,8 @@
                 </div>
 
                 <!-- 选择半身像-右箭头 -->
-                <button type="button" class="btn btn-light align-self-center"> <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
+                <button type="button" id="bodies-right-arrow" class="btn btn-light align-self-center arr-btn">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
 
             </div>
             
