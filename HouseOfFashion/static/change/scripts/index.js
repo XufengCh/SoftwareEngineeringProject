@@ -60,6 +60,8 @@ $(document).ready(function () {
         $('#body-'+body_selected).addClass('selected');
     });
 
+    // 选择当前被选中的两张图片作为合成源
+    // 在发送前先弹出窗口由用户确认
     $('#generate-btn').click(function (e) { 
         e.preventDefault();
         var source_cloth = $('#clothe-'+clothe_selected).find('.figure-img').attr('src');
