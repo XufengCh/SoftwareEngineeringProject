@@ -5,27 +5,89 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Register...</title>
+    {% load static %}
     <link href="{% static 'change/assets/bookmark.ico' %}" rel="shortcut icon">
     <link href="{% static 'change/assets/bookmark.ico' %}" rel="bookmark">
 
     <!-- CSS -->
     <link crossorigin="anonymous" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" rel="stylesheet">
-    <link href="{% static 'change/styles/style.css' %}" rel="stylesheet" type="text/css">
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" rel="stylesheet">
     <!-- JAVASCRIPT -->
     <script crossorigin="anonymous" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-        src="https://code.jquery.com/jquery-3.4.1.js"></script>
+            src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js">
-        </script>
+            src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js">
+    </script>
     <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js">
-        </script>
+            src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js">
+    </script>
+    <style>
+        ul {
+            margin-bottom: 0;
+        }
+
+        .errorlist {
+            padding-inline-start: 0;
+        }
+
+        .errorlist li {
+            list-style: none;
+            color: red;
+        }
+    </style>
 </head>
-<body class="text-center">
+<body class="py-4" style="background-color: #f5f5f5">
+<div class="container">
+    <form action="{% url 'users:register' %}" class="col-md-4 offset-md-4" method="POST">
+        {% csrf_token %}
+        <div class="text-center">
+            <img class="mb-2" height="72" src="{% static 'change/assets/bookmark.ico' %}" width="72">
+            <h1 class="h3 mb-3 font-weight-normal">时尚精品屋</h1>
+        </div>
 
+        <div class="form-group mb-1">
+            <label class="sr-only" for="id_username">用户名：</label>
+            {{ form.username }}
+            <small>
+                {{ form.username.errors }}
+            </small>
+            <small class="form-text text-muted">必填。请输入您的邮箱作为您的用户名。长度限制为150个字符或更少。</small>
+        </div>
 
+        <div class="form-group mb-1">
+            <label class="sr-only" for="id_nickname">昵称：</label>
+            {{ form.nickname }}
+            <small>
+                {{ form.nickname.errors }}
+            </small>
+            <small class="form-text text-muted">必填。长度限制为50个字符或更少</small>
+        </div>
+
+        <div class="form-group mb-1">
+            <label class="sr-only" for="id_password1">密码：</label>
+            {{ form.password1 }}
+            <small>
+                {{ form.password1.errors }}
+            </small>
+            <small class="form-text text-muted">{{ form.password1.help_text|safe }}</small>
+        </div>
+
+        <div class="form-group mb-1">
+            <label class="sr-only" for="id_password2">确认密码：</label>
+            {{ form.password2 }}
+            <small>
+                {{ form.password2.errors }}
+            </small>
+            <small class="form-text text-muted">{{ form.password2.help_text|safe }}</small>
+        </div>
+
+        <div class="text-center mt-2">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+            <a class="my-2 mx-auto" href="#">已有账户？前往登录页</a>
+        </div>
+    </form>
+</div>
 </body>
 </html>
