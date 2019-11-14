@@ -59,6 +59,24 @@ $(document).ready(function () {
         $('#clothe-'+clothe_selected).addClass('selected');
         $('#body-'+body_selected).addClass('selected');
     });
+
+    // 选择当前被选中的两张图片作为合成源
+    // 在发送前先弹出窗口由用户确认
+    $('#generate-btn').click(function (e) { 
+        e.preventDefault();
+        var source_cloth = $('#clothe-'+clothe_selected).find('.figure-img').attr('src');
+        var source_body = $('#body-'+body_selected).find('.figure-img').attr('src');
+        // alert(source_body);
+        // alert(source_cloth);
+        var $modal = $('#submit-modal');
+        $modal.modal('show');
+        var source_cloth_pic = $modal.find('#source-cloth');
+        source_cloth_pic.attr('src', source_cloth);
+        var source_body_pic = $modal.find('#source-body');
+        source_body_pic.attr('src', source_body);
+        // TODO: set width
+        // 现在先把宽度在html里面定死不改了
+    });
 });
 
 //获取图片的路径，该路径不是图片在本地的路径

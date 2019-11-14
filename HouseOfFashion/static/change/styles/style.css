@@ -69,6 +69,19 @@ body {
     width: 132px;
     height: 56px;
     border-color: #FDA59E;
+    font-size: 25px;
+    font-weight: 700;
+
+    background: #FDA59E;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+#generate-btn {
+    width: 132px;
+    height: 56px;
+    border-color: #FDA59E;
+    font-size: 25px;
+    font-weight: 700;
 
     background: #FDA59E;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
