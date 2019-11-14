@@ -1,5 +1,5 @@
 from django.db import models
-from ..images.models import Clothe, Body
+from images.models import Clothe, Body
 
 
 # Create your models here.

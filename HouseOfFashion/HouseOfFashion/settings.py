@@ -132,5 +132,5 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 
 # store files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = os.path.join(BASE_DIR, 'media/')
