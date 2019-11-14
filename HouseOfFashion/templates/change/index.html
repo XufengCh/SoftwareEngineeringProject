@@ -64,7 +64,7 @@
     </nav>
 
     <div class="row mb-3 clearfix mx-0" id="main-body">
-        <!-- 照片及评分区 -->
+        <!-- 合成图片及评分区 -->
         <div class="col-md-3 offset-md-1 text-center align-self-start" id="body-window">
             <!-- photo of user -->
             <div class="row justify-content-center">
@@ -86,16 +86,19 @@
 
         </div>
 
-        <div id="clothes" class="col-md-7">
+        <div id="operate-window" class="col-md-7 align-self-start">
             <span class="h3 m-2 mini-title">
-                上传
+                衣物
             </span>
-            <!-- uploaded clothes -->
-            <div class="row" id="uploaded">
-                <div id="clothe-0" class="col-md-4 p-2">
+            <!-- 用户在这里上传衣物 -->
+            <div class="row justify-content-center" id="clothes">
+                <!-- 选择衣物-左箭头 -->
+                <button type="button" class="btn btn-light align-self-center"> <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>
+
+                <div id="clothe-0" class="col-md-2 p-2">
                     <div class="photo-wrapper closet rounded my-2">
                         <figure class="figure" style="margin-bottom: 0px;">
-                            <img src="{% static 'change/assets/sample-ash.jpg' %}" class="figure-img img-fluid rounded"
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
                             <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
                             <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
@@ -103,10 +106,10 @@
                     </div>
                 </div>
 
-                <div id="clothe-1" class="col-md-4 p-2">
+                <div id="clothe-1" class="col-md-2 p-2">
                     <div class="photo-wrapper closet rounded my-2">
                         <figure class="figure" style="margin-bottom: 0px;">
-                            <img src="{% static 'change/assets/sample-ash.jpg' %}" class="figure-img img-fluid rounded"
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
                             <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
                             <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
@@ -114,67 +117,110 @@
                     </div>
                 </div>
 
-                <div id="clothe-2" class="col-md-4 p-2">
+                <div id="clothe-2" class="col-md-2 p-2">
                     <div class="photo-wrapper rounded my-2">
                         <figure class="figure" style="margin-bottom: 0px;">
-                            <img src="{% static 'change/assets/sample-ash.jpg' %}" class="figure-img img-fluid rounded"
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
                             <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
                             <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
                         </figure>
                     </div>
                 </div>
+
+                <div id="clothe-3" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="clothe-4" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+                <!-- 选择衣物-右箭头 -->
+                <button type="button" class="btn btn-light align-self-center"> <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
             </div>
 
+            <!-- 用户在这里上传半身像 -->
             <span class="h3 m-2 mini-title">
-                热门搭配
+                模特
             </span>
-            <!-- recommended clothes -->
-            <div class="row" id="recommend">
-                <div class="col-md-3 p-1">
-                    <div class="photo-wrapper rounded my-2">
-                        <figure class="figure" style="margin-bottom: 0px;">
-                            <img src="{% static 'change/assets/sample-dante.jpg' %}"
-                                class="figure-img img-fluid rounded" style="margin-bottom: 0px;" alt="热门搭配">
-                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
-                        </figure>
-                    </div>
-                </div>
+            <div class="row justify-content-center" id="bodies">
+                <!-- 选择半身像-左箭头 -->
+                <button type="button" class="btn btn-light align-self-center"> <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>
 
-                <div class="col-md-3 p-1">
-                    <div class="photo-wrapper rounded my-2">
+                <div id="body-0" class="col-md-2 p-2">
+                    <div class="photo-wrapper closet rounded my-2">
                         <figure class="figure" style="margin-bottom: 0px;">
-                            <img src="{% static 'change/assets/sample-neo.jpg' %}" class="figure-img img-fluid rounded"
-                                style="margin-bottom: 0px;" alt="热门搭配">
-                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
-                        </figure>
-                    </div>
-                </div>
-
-                <div class="col-md-3 p-1">
-                    <div class="photo-wrapper rounded my-2">
-                        <figure class="figure" style="margin-bottom: 0px;">
-                            <img src="{% static 'change/assets/sample-dante.jpg' %}"
-                                class="figure-img img-fluid rounded" style="margin-bottom: 0px;" alt="热门搭配">
-                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
-                        </figure>
-                    </div>
-                </div>
-
-                <div class="col-md-3 p-1">
-                    <div class="photo-wrapper rounded my-2">
-                        <figure class="figure" style="margin-bottom: 0px;">
-                            <img src="{% static 'change/assets/sample-neo.jpg' %}" class="figure-img img-fluid rounded"
-                                style="margin-bottom: 0px;" alt="热门搭配">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
                             <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
                             <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
                         </figure>
                     </div>
                 </div>
+
+                <div id="body-1" class="col-md-2 p-2">
+                    <div class="photo-wrapper closet rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="body-2" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="body-3" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="body-4" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <!-- 选择半身像-右箭头 -->
+                <button type="button" class="btn btn-light align-self-center"> <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
+
             </div>
+            
         </div>
     </div>
 
