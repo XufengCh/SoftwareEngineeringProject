@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'change',
     'users',
+    'images',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,3 +130,7 @@ AUTH_USER_MODEL = 'users.User'
 # LOGIN_REDIRECT_URL
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
+
+# store files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = os.path.join(BASE_DIR, 'media')
