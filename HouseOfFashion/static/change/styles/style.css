@@ -24,19 +24,17 @@ body {
     height: auto;
     padding: 20px;
     padding-top: 40px;
+    background: rgba(255, 255, 255, 0.58);
 }
 
-#clothes {
+#operate-window {
     padding: 30px;
     margin-left: 40px;
+    background: rgba(255, 255, 255, 0.58);
 }
 
 #main-body {
     margin-top: 20px;
-}
-
-#body-window, #clothes {
-    background: rgba(255, 255, 255, 0.58);
 }
 
 .photo-wrapper {
