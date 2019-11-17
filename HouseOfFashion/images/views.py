@@ -13,12 +13,12 @@ SAVE_UPLOAD = False
 # 传入参数：
 # pic(file)：对应用户上传的图片文件；通过request.FILES.get('pic')访问；
 # type(bool)：为true则为衣服，false为半身像；request.POST.get('type')访问；
-# slot(int)：前端图片对应的槽位，在表中唯一存在
+# slot(int)：前端图片对应的槽位，在表中唯一存在; request.POST.get('slot')访问；
 
 # 返回（json格式）：
 # message(string)：前端弹出的信息
 def upload_img(request):
-    print(request.FILES.get('pic').name)
+    print(request.FILES.get('pic').name + " IN SLOT " + request.POST.get('slot'))
     
     # 测试：可以正常地保存图片，存储目录 BASE_DIR\media\...
     if SAVE_UPLOAD:
