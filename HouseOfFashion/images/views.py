@@ -61,13 +61,13 @@ def tryon(request):
 
     # 功能不完整时采用备用方案返回一张固定的图片
 
-    # 思路一：把生成的图片也放入数据库，利用render
+    # 思路一：把生成的图片也存放在服务器，返回图片的路径
     # 思路二：
     imagepath = path.join("media","default.jpg")
     print("imagepath="+str(imagepath))
     image_data = open(imagepath,"rb").read()
     return HttpResponse(image_data,content_type="image/jpg")
 
-    # 思路三：ajax动态刷新，没有找到方法
+    # 思路三：生成的图片放数据库（看数据库那边的意思）
 
 
