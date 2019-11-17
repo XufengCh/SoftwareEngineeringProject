@@ -1,5 +1,9 @@
 # ignore vscode settings
 .vscode/
+# ignore saved image in media
+HouseOfFashion/media/**
+# ignore sqlite
+HouseOfFashion/db.sqlite3
 # ignore pyc files and swp files
 *.pyc
 *.swp

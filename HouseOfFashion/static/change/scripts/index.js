@@ -35,7 +35,6 @@ $(document).ready(function () {
         formdata.append('name',pic.name);
         formdata.append('pic',pic);
         formdata.append('type',type);
-        // formdata.encoding = "multipart/form-data";
         $img = $(this).prev('.figure-img');
         console.log(pic, type, pic.name);
         if (objUrl) {
