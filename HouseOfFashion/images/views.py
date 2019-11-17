@@ -13,12 +13,12 @@ SAVE_UPLOAD = False
 # 传入参数：
 # pic(file)：对应用户上传的图片文件；通过request.FILES.get('pic')访问；
 # type(bool)：为true则为衣服，false为半身像；request.POST.get('type')访问；
-# name(string)：为用户电脑上的图片文件名
+# slot(int)：前端图片对应的槽位，在表中唯一存在
 
 # 返回（json格式）：
 # message(string)：前端弹出的信息
 def upload_img(request):
-    print(request.POST.get('name'))
+    print(request.FILES.get('pic').name)
     
     # 测试：可以正常地保存图片，存储目录 BASE_DIR\media\...
     if SAVE_UPLOAD:
@@ -39,16 +39,16 @@ def upload_img(request):
 # 传入作为合成源的两张图片：衣物和用户的模特，调用对应接口进行图片生成并返回
 
 # 传入参数：
-# cloth(string)：用户选择的衣物对应的唯一标识；通过request.POST.get('cloth')访问；
-# body(string)：用户选择的模特对应的唯一标识；request.POST.get('body')访问；
+# cloth_slot(int)：用户选择的衣物对应的唯一标识；通过request.POST.get('cloth')访问；
+# body_slot(int)：用户选择的模特对应的唯一标识；request.POST.get('body')访问；
 
 # 返回（json格式）：
 # message(string)：前端弹出的信息
 # result(file)：在前端展示的图片
 # NOTE: 也可以考虑返回服务器上生成图片的地址
 def generate(request):
-    print('cloth: '+request.POST.get('cloth'))
-    print('body: '+request.POST.get('body'))
+    print('clothSlotNumber: '+request.POST.get('cloth_slot'))
+    print('bodySlotNumber: '+request.POST.get('body_slot'))
     ret_dict = {'message': '[SERVER]图片合成已完成'}
     return JsonResponse(ret_dict)
 

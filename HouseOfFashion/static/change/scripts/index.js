@@ -31,15 +31,20 @@ $(document).ready(function () {
     // name为用户电脑上的图片文件名
     // 注意因为使用 next(), prev() 组件的前后次序很重要
     $(".upload-img").on("change", function () {
-        let type = $(this).parents().find('.pic-container').attr('id') == 'clothes';
+        var container = String($(this).parents('.photo-wrapper').parent().attr('id'));
+
+        let type = container.startsWith('clothe');
+        let slot = Number(container.substring(container.length-1));
         let pic = this.files[0];
         let objUrl = getObjectURL(pic);
+
         var formdata=new FormData();
-        formdata.append('name',pic.name);
+        formdata.append('slot',slot);
         formdata.append('pic',pic);
         formdata.append('type',type);
         $img = $(this).prev('.figure-img');
-        console.log(pic, type, pic.name);
+        console.log(pic, type, slot);
+
         if (objUrl) {
             // 将图片路径存入src中，显示出图片
             $img.attr("src", objUrl); 
@@ -58,6 +63,16 @@ $(document).ready(function () {
                     // console.log(pic.name + " 已成功保存到后端服务器");
                 }
             });
+        }
+        // 将被框选的图片更改为当前用户替换的
+        if (type) {
+            $('#clothe-'+clothe_selected).removeClass('selected');
+            $('#clothe-'+slot).addClass('selected');
+            clothe_selected = slot;
+        } else {
+            $('#body-'+body_selected).removeClass('selected');
+            $('#body-'+slot).addClass('selected');
+            body_selected = slot;
         }
     });
 
@@ -96,8 +111,8 @@ $(document).ready(function () {
         var source_cloth = $('#clothe-'+clothe_selected).find('.figure-img').attr('src');
         var source_body = $('#body-'+body_selected).find('.figure-img').attr('src');
         // TODO: 规定图片在数据库中的唯一标识
-        cloth_id = source_cloth; // FOR NOW
-        body_id = source_body; // FOR NOW
+        // cloth_id = source_cloth; // FOR NOW
+        // body_id = source_body; // FOR NOW
         
         var $modal = $('#submit-modal');
         $modal.modal('show');
@@ -114,8 +129,8 @@ $(document).ready(function () {
     $('#send-btn').click(function () { 
         // 向服务器发送数据字典
         let formdata = new FormData();
-        formdata.append('cloth', cloth_id);
-        formdata.append('body', body_id);
+        formdata.append('cloth_slot', clothe_selected);
+        formdata.append('body_slot', body_selected);
         $.ajax({
             type: "POST",
             url: generate_url,
