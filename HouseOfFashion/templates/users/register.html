@@ -65,7 +65,7 @@
         <div class="form-group mb-1">
             <label class="sr-only" for="id_nickname">昵称：</label>
             {{ form.nickname }}
-            {% if form.username.errors %}
+            {% if form.nickkname.errors %}
             <small>
                 {{ form.nickname.errors }}
             </small>
@@ -76,7 +76,7 @@
         <div class="form-group mb-1">
             <label class="sr-only" for="id_password1">密码：</label>
             {{ form.password1 }}
-            {% if form.username.errors %}
+            {% if form.password1.errors %}
             <small>
                 {{ form.password1.errors }}
             </small>
@@ -87,7 +87,7 @@
         <div class="form-group mb-1">
             <label class="sr-only" for="id_password2">确认密码：</label>
             {{ form.password2 }}
-            {% if form.username.errors %}
+            {% if form.password2.errors %}
             <small>
                 {{ form.password2.errors }}
             </small>
