@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from HouseOfFashion import settings
-# 如需测试存图请置为True
+import os
+
+# 如在上传图片时想要看到存在本地的图片请置为True
 SAVE_UPLOAD = False
 
 # upload_img():
@@ -17,12 +19,35 @@ SAVE_UPLOAD = False
 # message(string)：前端弹出的信息
 def upload_img(request):
     print(request.POST.get('name'))
+    
     # 测试：可以正常地保存图片，存储目录 BASE_DIR\media\...
     if SAVE_UPLOAD:
         image = request.FILES.get('pic')
         fname = '%s%s' % (settings.MEDIA_ROOT, image.name)
+        # 如果没有这个存储目录则为新建一个目录
+        if not os.path.exists(settings.MEDIA_ROOT):
+            os.makedirs(settings.MEDIA_ROOT)
         with open(fname, 'wb') as pic:
             for c in image.chunks():
                 pic.write(c)
-    ret_dict = {'message': '服务器消息：图片已保存至数据库'}
+    # 测试结束
+
+    ret_dict = {'message': '[SERVER]图片已保存至数据库'}
+    return JsonResponse(ret_dict)
+
+# generate():
+# 传入作为合成源的两张图片：衣物和用户的模特，调用对应接口进行图片生成并返回
+
+# 传入参数：
+# cloth(string)：用户选择的衣物对应的唯一标识；通过request.POST.get('cloth')访问；
+# body(string)：用户选择的模特对应的唯一标识；request.POST.get('body')访问；
+
+# 返回（json格式）：
+# message(string)：前端弹出的信息
+# result(file)：在前端展示的图片
+# NOTE: 也可以考虑返回服务器上生成图片的地址
+def generate(request):
+    print('cloth: '+request.POST.get('cloth'))
+    print('body: '+request.POST.get('body'))
+    ret_dict = {'message': '[SERVER]图片合成已完成'}
     return JsonResponse(ret_dict)

@@ -1,7 +1,8 @@
 # SoftwareEngineeringProject
 复旦大学软件工程化开发课程项目  
 
-现在很多id和class名都和函数选择器绑定，不确定情况下尽量不要改 
+现在很多id和class名都和函数选择器绑定，不确定情况下尽量不要改  
+负责后端开发的同学实现HouseOfFashion\images\views.py这个文件中的upload_img()和generate()两个函数
 
 要求python3以上  
 基于bootstrap4.0  

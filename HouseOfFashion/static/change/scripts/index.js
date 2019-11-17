@@ -1,11 +1,14 @@
+const upload_url = "http://localhost:8000/images/upload_img";
+const generate_url = "http://localhost:8000/images/generate";
 $(document).ready(function () {
     // 用于标识当前选中图片的两个变量
     var clothe_selected = 0;
     var body_selected = 0;
+    var clothe_id;
+    var body_id;
     // 用于规定可选栏位最大最小值的两个常量
     const clothe_max = 5;
     const body_max = 5;
-    // const address = "127.0.0.1:8000";
     // DEBUG: 在figure-img的on-click函数里调用这个函数会调用到爆栈
     // 原因不清楚先这么处理
     $('.upload-img').on('click', function (e) {
@@ -44,15 +47,15 @@ $(document).ready(function () {
             $.ajax({
                 // headers:{"X-CSRFtoken":$.cookie("csrftoken")},
                 // headers: {"Access-Control-Allow-Origin":"*"},
-                url: "http://localhost:8000/images/upload_img",
+                url: upload_url,
                 type: "POST",
                 data: formdata,
                 dataType: "json",
                 processData: false,//用于对data参数进行序列化处理 这里必须false
                 contentType: false, //必须
                 success: function (data) {
-                    alert(data.message);
-                    console.log(pic.name + " 已成功保存到后端服务器");
+                    console.log(data.message);
+                    // console.log(pic.name + " 已成功保存到后端服务器");
                 }
             });
         }
@@ -92,8 +95,10 @@ $(document).ready(function () {
         e.preventDefault();
         var source_cloth = $('#clothe-'+clothe_selected).find('.figure-img').attr('src');
         var source_body = $('#body-'+body_selected).find('.figure-img').attr('src');
-        // alert(source_body);
-        // alert(source_cloth);
+        // TODO: 规定图片在数据库中的唯一标识
+        cloth_id = source_cloth; // FOR NOW
+        body_id = source_body; // FOR NOW
+        
         var $modal = $('#submit-modal');
         $modal.modal('show');
         var source_cloth_pic = $modal.find('#source-cloth');
@@ -103,7 +108,41 @@ $(document).ready(function () {
         // TODO: set width
         // 现在先把宽度在html里面定死不改了
     });
+
+   // 确认后将两张图片的标识发送给后端，并接收后端返回的合成结果
+   // 用合成结果替换$('#display)中的图片
+    $('#send-btn').click(function () { 
+        // 向服务器发送数据字典
+        let formdata = new FormData();
+        formdata.append('cloth', cloth_id);
+        formdata.append('body', body_id);
+        $.ajax({
+            type: "POST",
+            url: generate_url,
+            data: formdata,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data.message);
+                $('#display img').attr('src', '/static/change/assets/sample-ash.jpg');
+                // TODO: 替换生成图片框中的图片
+                // console.log(data.result);
+                // $('#display img').attr('src', getObjectURL(data.result));
+            }
+        });
+        // 点击确认后关闭弹窗
+        var $modal = $('#submit-modal');
+        $modal.modal('hide');
+    });
 });
+
+$(document).ajaxSend(function(event, jqxhr, settings) {
+    if ( settings.url == generate_url ) {
+        console.log("[CLIENT]图片合成ajax请求已发送");
+        // TODO: ajax请求发出，图片合成时的加载动画 or 标志，让用户知道合成在进行
+    }
+  });
 
 //获取图片的路径，该路径不是图片在本地的路径
 function getObjectURL(file) {
