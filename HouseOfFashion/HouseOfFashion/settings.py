@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'change',
     'users',
     'images',
+    # 跨域中间件
+    'corsheaders', 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,10 +48,14 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 使用 POST 方法暂时将此中间件注释
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 定义跨域中间件
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',   
 ]
 
 ROOT_URLCONF = 'HouseOfFashion.urls'
@@ -134,3 +140,30 @@ LOGIN_REDIRECT_URL = '/'
 # store files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = os.path.join(BASE_DIR, 'media/')
+
+# ajax 传输需要，解决跨域方式
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = ()
+
+# CORS_ALLOW_METHODS = (
+#     'DELETE',
+#     'GET',
+#     'OPTIONS',
+#     'PATCH',
+#     'POST',
+#     'PUT',
+#     'VIEW',
+# )
+  
+# CORS_ALLOW_HEADERS = (
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# )

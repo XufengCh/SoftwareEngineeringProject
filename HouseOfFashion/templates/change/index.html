@@ -19,6 +19,7 @@
     <!-- JAVASCRIPT -->
     <script crossorigin="anonymous" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
         src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js">
         </script>
@@ -27,7 +28,6 @@
         </script>
 </head>
 <script type="text/javascript" src="{% static 'change/scripts/index.js' %}"></script>
-
 <body background="{% static 'change/assets/background.png' %}">
     <nav class="navbar navbar-expand-lg navbar-light" id="navbarSelf">
         <a class="navbar-brand" href="#">
@@ -72,7 +72,8 @@
                     <figure class="figure" style="margin-bottom: 0px;">
                         <img src="{% static 'change/assets/sample-ebo.jpg' %}" class="figure-img img-fluid rounded"
                             style="margin-bottom: 0px;" alt="返回您的图片生成结果">
-                        <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            <!-- 修正：主窗口不需要用户上传图片 -->
+                        <!-- <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" /> -->
                         <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
                     </figure>
                 </div>
@@ -91,7 +92,7 @@
                 衣物
             </span>
             <!-- 用户在这里上传衣物 -->
-            <div class="row justify-content-center" id="clothes">
+            <div class="row justify-content-center pic-container" id="clothes">
                 <!-- 选择衣物-左箭头 -->
                 <button id="clothes-left-arrow" type="button" class="btn btn-light align-self-center arr-btn">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>
@@ -159,7 +160,7 @@
             <span class="h3 m-2 mini-title">
                 模特
             </span>
-            <div class="row justify-content-center" id="bodies">
+            <div class="row justify-content-center pic-container" id="bodies">
                 <!-- 选择半身像-左箭头 -->
                 <button type="button" id="bodies-left-arrow" class="btn btn-light align-self-center arr-btn">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>

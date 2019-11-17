@@ -5,6 +5,7 @@ $(document).ready(function () {
     // 用于规定可选栏位最大最小值的两个常量
     const clothe_max = 5;
     const body_max = 5;
+    // const address = "127.0.0.1:8000";
     // DEBUG: 在figure-img的on-click函数里调用这个函数会调用到爆栈
     // 原因不清楚先这么处理
     $('.upload-img').on('click', function (e) {
@@ -20,15 +21,41 @@ $(document).ready(function () {
     });
 
     // 用户上传图片结束后组件内容改变，调用getObjectURL()得到可用地址，替换与此组件相邻的图片的src属性
+    // 替换成功后将该图片发送到服务器后端添加到数据库中
+    // ajax 发送的数据字典：
+    // pic对应用户上传的图片文件；
+    // type为true则为衣服，false为半身像；
+    // name为用户电脑上的图片文件名
     // 注意因为使用 next(), prev() 组件的前后次序很重要
     $(".upload-img").on("change", function () {
-        var objUrl = getObjectURL(this.files[0]); 
-        // DEBUG用地址弹窗
-        // alert(objUrl);
+        let type = $(this).parents().find('.pic-container').attr('id') == 'clothes';
+        let pic = this.files[0];
+        let objUrl = getObjectURL(pic);
+        var formdata=new FormData();
+        formdata.append('name',pic.name);
+        formdata.append('pic',pic);
+        formdata.append('type',type);
+        // formdata.encoding = "multipart/form-data";
         $img = $(this).prev('.figure-img');
+        console.log(pic, type, pic.name);
         if (objUrl) {
-            //将图片路径存入src中，显示出图片
+            // 将图片路径存入src中，显示出图片
             $img.attr("src", objUrl); 
+            // 向服务器发送数据字典
+            $.ajax({
+                // headers:{"X-CSRFtoken":$.cookie("csrftoken")},
+                // headers: {"Access-Control-Allow-Origin":"*"},
+                url: "http://localhost:8000/images/upload_img",
+                type: "POST",
+                data: formdata,
+                dataType: "json",
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    alert(data.message);
+                    console.log(pic.name + " 已成功保存到后端服务器");
+                }
+            });
         }
     });
 

@@ -5,14 +5,18 @@
 
 要求python3以上  
 基于bootstrap4.0  
+**pip install django-cors-headers**  
 组件使用手册 https://getbootstrap.com/docs/4.0/components/alerts/  
 据说在网站上看到的css格式比较准我之后再改  
 
 执行命令 python manage.py runserver 
-~~访问 http://127.0.0.1:8000/change/ 即可访问主页~~ 
 访问http://127.0.0.1:8000/即可访问主页 
 
 管理员用户名 admin 
 邮箱 499485532@qq.com 
 密码 admin 
 访问http://127.0.0.1:8000/admin 即可访问管理员页 
+
+使用ajax与后端交互式使用了POST方法发送一个formdata 
+在后端注释了csrf中间件（因为前端添加csrftoken失败） 
+（理由不明）存在跨域访问问题，在后端添加了跨域中间件（settings.py），需要安装新组件（**见安装环境↑**）
