@@ -14,10 +14,22 @@ class BodyImage(models.Model):
 
 
 class Clothe(models.Model):
+    """
+    user: the user of the clothe
+    image: the image of the clothe
+    slot: 衣服在用户的界面中所显示的槽位
+    """
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     image = models.ForeignKey(to=ClotheImage, on_delete=models.CASCADE)
+    slot = models.PositiveSmallIntegerField()
 
 
 class Body(models.Model):
+    """
+    user: the user of the body
+    image: the image of the body
+    slot: 半身照在用户的界面中所显示的槽位
+    """
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     image = models.ForeignKey(to=BodyImage, on_delete=models.CASCADE)
+    slot = models.PositiveSmallIntegerField()
