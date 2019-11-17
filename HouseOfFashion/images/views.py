@@ -38,7 +38,7 @@ def tryon(request):
 
     # 思路一：把生成的图片也放入数据库，利用render
     # 思路二：
-    imagepath = "default.jpg"
+    imagepath = path.join("media","default.jpg")
     print("imagepath="+str(imagepath))
     image_data = open(imagepath,"rb").read()
     return HttpResponse(image_data,content_type="image/jpg")
