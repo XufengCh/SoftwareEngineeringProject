@@ -26,3 +26,23 @@ def upload_img(request):
                 pic.write(c)
     ret_dict = {'message': '服务器消息：图片已保存至数据库'}
     return JsonResponse(ret_dict)
+
+
+# 试穿函数
+def tryon(request):
+    # 通过数据库操作得到前端的衣服和模特图片
+    
+    # 调用后端的试穿功能函数并得到效果图
+
+    # 功能不完整时采用备用方案返回一张固定的图片
+
+    # 思路一：把生成的图片也放入数据库，利用render
+    # 思路二：
+    imagepath = "default.jpg"
+    print("imagepath="+str(imagepath))
+    image_data = open(imagepath,"rb").read()
+    return HttpResponse(image_data,content_type="image/jpg")
+
+    # 思路三：ajax动态刷新，没有找到方法
+
+
