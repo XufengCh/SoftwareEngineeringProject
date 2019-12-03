@@ -1,10 +1,17 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from HouseOfFashion import settings
+from django.db import models
+from images.models import *
+from images.img_process import hash_md5
+from .models import User
+import sqlite3
 import os
 
+
+
 # 如在上传图片时想要看到存在本地的图片请置为True
-SAVE_UPLOAD = False
+SAVE_UPLOAD = True
 
 # upload_img():
 # 用户更替主页图片时主动将图片存储到服务器中,根据用户发送图片的类型（type）来决定保存到拿一张表中
@@ -30,6 +37,19 @@ def upload_img(request):
         with open(fname, 'wb') as pic:
             for c in image.chunks():
                 pic.write(c)
+        img_type=request.POST.get('type')
+        print(request.user.is_authenticated)
+        print(request.user.user_id)
+        if img_type:
+            ClotheImage.objects.create(    #数据库插入语句
+                hash=hash_md5(image),
+                image_file=image,
+            )
+        else:
+            BodyImage.objects.create(    #数据库插入语句
+                hash=hash_md5(image),
+                image_file=image,
+            )
     # 测试结束
 
     ret_dict = {'message': '[SERVER]图片已保存至数据库'}
@@ -49,6 +69,7 @@ def upload_img(request):
 def generate(request):
     print('clothSlotNumber: '+request.POST.get('cloth_slot'))
     print('bodySlotNumber: '+request.POST.get('body_slot'))
+    clothe_image=ClotheImage.image_file
     ret_dict = {'message': '[SERVER]图片合成已完成'}
     return JsonResponse(ret_dict)
 
@@ -63,7 +84,7 @@ def tryon(request):
 
     # 思路一：把生成的图片也存放在服务器，返回图片的路径
     # 思路二：
-    imagepath = path.join("media","default.jpg")
+    imagepath = os.path.join("media","default.jpg")
     print("imagepath="+str(imagepath))
     image_data = open(imagepath,"rb").read()
     return HttpResponse(image_data,content_type="image/jpg")
