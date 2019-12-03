@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from HouseOfFashion import settings
 from django.db import models
@@ -26,6 +26,13 @@ SAVE_UPLOAD = True
 # message(string)：前端弹出的信息
 def upload_img(request):
     print(request.FILES.get('pic').name + " IN SLOT " + request.POST.get('slot'))
+
+    # test
+    print(request.user)
+    if request.user.is_authenticated:
+        print(request.user.username + '用户已登录')
+    else:
+        print('LOGIN FAILED')
     
     # 测试：可以正常地保存图片，存储目录 BASE_DIR\media\...
     if SAVE_UPLOAD:
@@ -37,9 +44,9 @@ def upload_img(request):
         with open(fname, 'wb') as pic:
             for c in image.chunks():
                 pic.write(c)
-        img_type=request.POST.get('type')
+        img_type = request.POST.get('type')
         print(request.user.is_authenticated)
-        print(request.user.user_id)
+        print(request.user.username)
         if img_type:
             ClotheImage.objects.create(    #数据库插入语句
                 hash=hash_md5(image),
@@ -90,5 +97,10 @@ def tryon(request):
     return HttpResponse(image_data,content_type="image/jpg")
 
     # 思路三：生成的图片放数据库（看数据库那边的意思）
+
+def test(request):
+    if request.user.is_authenticated:
+        print("已登录")
+    return redirect('/')
 
 

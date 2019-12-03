@@ -56,9 +56,21 @@
                 <!-- <li class="nav-item">
                     <a class="nav-link" href="#" style="color: #D0666F">注册</a>
                 </li> -->
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <p>欢迎，{{ user.username }}</p>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}" style="color: #D0666F">退出</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'images:test' %}" style="color: #D0666F">测试</a>
+                </li>
+                {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}" style="color: #D0666F">登录</a>
                 </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
