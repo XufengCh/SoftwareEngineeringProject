@@ -11,12 +11,14 @@
 据说在网站上看到的css格式比较准我之后再改  
 
 执行命令 python manage.py runserver 
-访问http://127.0.0.1:8000/即可访问主页 
+**访问http://localhost:8000/即可访问主页**  
+注意先不要用127.0.0.1:8000 ajax会出问题   
+不要把db.sqlite3的修改添加到项目里面   
 
 管理员用户名 admin 
 邮箱 499485532@qq.com 
 密码 admin 
-访问http://127.0.0.1:8000/admin 即可访问管理员页 
+访问http://localhost:8000/admin 即可访问管理员页 
 
 使用ajax与后端交互式使用了POST方法发送一个formdata 
 在后端注释了csrf中间件（因为前端添加csrftoken失败） 
