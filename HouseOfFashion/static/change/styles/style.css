@@ -1,0 +1,88 @@
+/* 注意css的编写请按照 tag -> class -> id 的选择器次序 */
+/* 这里为什么注释掉了？这里是用来做图片随窗口大小延展的 */
+body {
+    background-size: cover;
+}
+
+.photo-wrapper {
+    position: relative;
+    width: 95%;
+    /* padding-bottom: 110%; */
+    background-color: rgb(255, 255, 255);
+}
+
+.mini-title {
+    color: #C64B57;
+    font-weight: 700;
+}
+
+.photo {
+    position : absolute;
+    top : 0; left : 0; right : 0; bottom : 0;
+}
+/* 给选中的图片添加一个下划阴影 */
+.selected img{
+    box-shadow: 0px 10px 0px rgba(61, 162, 255, 0.77);
+}
+
+#navbarMainBody .nav-link {
+    font-family: "Microsoft YaHei";
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+
+#navbarSelf {
+    padding: 20px;
+    background-color: rgba(138, 138, 138, 0.32);
+}
+
+#body-window {
+    height: auto;
+    padding: 20px;
+    padding-top: 40px;
+    background: rgba(255, 255, 255, 0.58);
+}
+
+#operate-window {
+    padding: 30px;
+    margin-left: 40px;
+    background: rgba(255, 255, 255, 0.58);
+}
+
+#main-body {
+    margin-top: 20px;
+}
+
+#display {
+    background-color: rgb(255, 255, 255,0);
+    border-style: dashed;
+    border-width: 2px;
+    color: rgb(0, 0, 0,0.3);
+    width: 100%;
+    /* padding-bottom: 140%; */
+}
+
+#eval-btn {
+    width: 132px;
+    height: 56px;
+    border-color: #FDA59E;
+    font-size: 25px;
+    font-weight: 700;
+
+    background: #FDA59E;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+#generate-btn {
+    width: 132px;
+    height: 56px;
+    border-color: #FDA59E;
+    font-size: 25px;
+    font-weight: 700;
+
+    background: #FDA59E;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}

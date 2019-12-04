@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>时尚精品屋</title>
+    <link href="{% static 'change/assets/bookmark.ico' %}" rel="shortcut icon">
+    <link href="{% static 'change/assets/bookmark.ico' %}" rel="bookmark">
+
+    <!-- CSS -->
+    <link crossorigin="anonymous" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" rel="stylesheet">
+    <link href="{% static 'change/styles/style.css' %}" rel="stylesheet" type="text/css">
+    <!-- JAVASCRIPT -->
+    <script crossorigin="anonymous" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js">
+        </script>
+    <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js">
+        </script>
+</head>
+<script type="text/javascript" src="{% static 'change/scripts/index.js' %}"></script>
+<body background="{% static 'change/assets/background.png' %}">
+    <nav class="navbar navbar-expand-lg navbar-light" id="navbarSelf">
+        <a class="navbar-brand" href="#">
+            <img alt="" class="d-inline-block align-top" height="30" src="{% static 'change/assets/bookmark.ico' %}"
+                width="30">
+        </a>
+
+        <button aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler" data-target="#navbarMainBody" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMainBody">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">在线试穿</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">搭配广场</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="#" style="color: #D0666F">注册</a>
+                </li> -->
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <p>欢迎，{{ user.username }}</p>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}" style="color: #D0666F">退出</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'images:test' %}" style="color: #D0666F">测试</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}" style="color: #D0666F">登录</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="row mb-3 clearfix mx-0" id="main-body">
+        <!-- 合成图片及评分区 -->
+        <div class="col-md-3 offset-md-1 text-center align-self-start" id="body-window">
+            <!-- photo of user -->
+            <div class="row justify-content-center">
+                <div class="photo-wrapper rounded m-2" id="display">
+                    <figure class="figure" style="margin-bottom: 0px;">
+                        <img src="{% static 'change/assets/sample-ebo.jpg' %}" class="figure-img img-fluid rounded"
+                            style="margin-bottom: 0px;" alt="返回您的图片生成结果">
+                            <!-- 修正：主窗口不需要用户上传图片 -->
+                        <!-- <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" /> -->
+                        <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                    </figure>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <!-- button -->
+                <button class="btn btn-primary my-2" type="button" id="eval-btn"
+                onclick="alert('他摸了');">评分</button>
+            </div>
+
+        </div>
+
+        <div id="operate-window" class="col-md-7 align-self-start">
+            <span class="h3 m-2 mini-title">
+                衣物
+            </span>
+            <!-- 用户在这里上传衣物 -->
+            <div class="row justify-content-center pic-container" id="clothes">
+                <!-- 选择衣物-左箭头 -->
+                <button id="clothes-left-arrow" type="button" class="btn btn-light align-self-center arr-btn">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>
+
+                <div id="clothe-0" class="col-md-2 p-2 selected">
+                    <div class="photo-wrapper closet rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="clothe-1" class="col-md-2 p-2">
+                    <div class="photo-wrapper closet rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-neo.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="clothe-2" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="clothe-3" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="clothe-4" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+                <!-- 选择衣物-右箭头 -->
+                <button type="button" id="clothes-right-arrow"  class="btn btn-light align-self-center arr-btn">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
+            </div>
+
+            <!-- 用户在这里上传半身像 -->
+            <span class="h3 m-2 mini-title">
+                模特
+            </span>
+            <div class="row justify-content-center pic-container" id="bodies">
+                <!-- 选择半身像-左箭头 -->
+                <button type="button" id="bodies-left-arrow" class="btn btn-light align-self-center arr-btn">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>
+
+                <div id="body-0" class="col-md-2 p-2 selected">
+                    <div class="photo-wrapper closet rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="body-1" class="col-md-2 p-2">
+                    <div class="photo-wrapper closet rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-neo.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="body-2" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="body-3" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <div id="body-4" class="col-md-2 p-2">
+                    <div class="photo-wrapper rounded my-2">
+                        <figure class="figure" style="margin-bottom: 0px;">
+                            <img src="{% static 'change/assets/sample-dante.jpg' %}" class="figure-img img-fluid rounded"
+                                style="margin-bottom: 0px;" alt="用户图片">
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
+                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        </figure>
+                    </div>
+                </div>
+
+                <!-- 选择半身像-右箭头 -->
+                <button type="button" id="bodies-right-arrow" class="btn btn-light align-self-center arr-btn">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
+
+            </div>
+
+            <div class="row justify-content-center">
+                <!-- <a name="" id="" class="btn btn-primary" href="#" role="button">合成</a> -->
+                <button class="btn btn-primary my-2" type="button" id="generate-btn">合成</button>
+            </div>
+            
+        </div>
+
+        <!-- 用户确认提交图片弹窗 -->
+        <div class="modal fade" id="submit-modal" tabindex="-1" role="dialog" aria-labelledby="submit-modal-label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="submit-modal-label">确认要提交以下两张图片吗？</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row justify-content-center">
+                    <figure class="figure" style="margin-bottom: 0px; margin-right:10px;width: 200px;">
+                        <img src="/" class="img-fluid rounded" id="source-cloth">
+                    </figure>
+                    <figure class="figure" style="margin-bottom: 0px;width: 200px;">
+                        <img src="/" class="img-fluid rounded" id="source-body">
+                    </figure>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                  <button type="button" class="btn btn-primary" id="send-btn">确认发送</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+
+</body>
+
+</html>

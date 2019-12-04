@@ -1,0 +1,11 @@
+# ignore vscode settings
+.vscode/
+# ignore saved image in media
+HouseOfFashion/media/**
+# ignore sqlite file
+*.sqlite3
+# ignore pyc files and swp files
+*.pyc
+*.swp
+# ignore pycache
+**/__pycache__
