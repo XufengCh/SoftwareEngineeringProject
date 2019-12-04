@@ -9,7 +9,7 @@ import sqlite3
 import os
 
 # 如在上传图片时想要看到存在本地的图片请置为True
-SAVE_UPLOAD = True
+SAVE_UPLOAD = False
 
 # upload_img():
 # 用户更替主页图片时主动将图片存储到服务器中,根据用户发送图片的类型（type）来决定保存到拿一张表中
@@ -23,37 +23,75 @@ SAVE_UPLOAD = True
 # 返回（json格式）：
 # message(string)：前端弹出的信息
 def upload_img(request):
-    print(request.FILES.get('pic').name + " IN SLOT " + request.POST.get('slot'))
-
     # test
-    if request.user.is_authenticated:
-        print(request.user.username + '用户已登录')
-    else:
-        print('LOGIN FAILED')
-    
+    # if request.user.is_authenticated:
+    #     print(request.user.username + '用户已登录')
+    # else:
+    #     print('LOGIN FAILED')
+    system_message = ''
     # 测试：可以正常地保存图片，存储目录 BASE_DIR\media\...
+    image = request.FILES.get('pic')
+    fname = '%s%s' % (settings.MEDIA_ROOT, image.name)
+    slot = request.POST.get('slot')
+    img_type = request.POST.get('type') == 'true'
+    if img_type:
+        print(request.user.username + ": NEW IMAGE IN CLOTHE SLOT " + request.POST.get('slot'))
+    else:
+        print(request.user.username + ": NEW IMAGE IN BODY SLOT " + request.POST.get('slot'))
+
+
+    # 可以存进数据库之后这块就不用执行了
     if SAVE_UPLOAD:
-        image = request.FILES.get('pic')
-        fname = '%s%s' % (settings.MEDIA_ROOT, image.name)
-        # 如果没有这个存储目录则为新建一个目录
         if not os.path.exists(settings.MEDIA_ROOT):
             os.makedirs(settings.MEDIA_ROOT)
         with open(fname, 'wb') as pic:
             for c in image.chunks():
                 pic.write(c)
-        img_type = request.POST.get('type')
-        # print(request.user.is_authenticated)
-        # print(request.user.username)
-        if img_type:
-            ClotheImage.objects.create(    #数据库插入语句
+    print(image.name, " hash value-> ", hash_md5(image))
+    # print(request.user.is_authenticated)
+    # print(request.user.username)
+    if img_type:
+        # 如果数据库中已存在就不插入新纪录
+        try:
+            clothe_image = ClotheImage.objects.get(hash=hash_md5(image))
+        except ClotheImage.DoesNotExist:
+            clothe_image = ClotheImage.objects.create(    #数据库插入语句
                 hash=hash_md5(image),
                 image_file=image,
             )
-        else:
-            BodyImage.objects.create(    #数据库插入语句
+        # 删除用户在这个槽位上的记录
+        try:
+            Clothe.objects.get(slot=slot).delete()
+            print(request.user.username + ": DELETE OLD IMAGE IN CLOTHE SLOT " + request.POST.get('slot'))
+        except Clothe.DoesNotExist:
+            pass
+        
+        Clothe.objects.create(
+            user=request.user,
+            image=clothe_image,
+            slot=slot
+        )
+    else:
+        try:
+            body_image = BodyImage.objects.get(hash=hash_md5(image))
+        except BodyImage.DoesNotExist:
+            body_image = BodyImage.objects.create(    #数据库插入语句
                 hash=hash_md5(image),
                 image_file=image,
             )
+
+        # 删除用户在这个槽位上的记录
+        try:
+            Body.objects.get(slot=slot).delete()
+            print(request.user.username + ": DELETE OLD IMAGE IN BODY SLOT " + request.POST.get('slot'))
+        except Body.DoesNotExist:
+            pass
+        
+        Body.objects.create(
+            user=request.user,
+            image=body_image,
+            slot=slot
+        )
     # 测试结束
 
     ret_dict = {'message': '[SERVER]图片已保存至数据库'}

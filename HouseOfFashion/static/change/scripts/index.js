@@ -41,7 +41,8 @@ $(document).ready(function () {
         var formdata=new FormData();
         formdata.append('slot',slot);
         formdata.append('pic',pic);
-        formdata.append('type',type);
+        formdata.append('type', type);
+        
         $img = $(this).prev('.figure-img');
         // console.log(pic, type, slot);
         
