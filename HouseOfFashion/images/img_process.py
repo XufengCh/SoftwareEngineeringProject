@@ -9,8 +9,8 @@ def hash_md5(file):
     :return: md5值
     """
     hasher = hashlib.md5()
-
-    for chunk in file.chunks:
+    # chunks()是方法，之前把括号漏了
+    for chunk in file.chunks():
         hasher.update(chunk)
 
     return hasher.hexdigest()

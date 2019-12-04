@@ -8,8 +8,6 @@ from .models import User
 import sqlite3
 import os
 
-
-
 # 如在上传图片时想要看到存在本地的图片请置为True
 SAVE_UPLOAD = True
 
@@ -28,7 +26,6 @@ def upload_img(request):
     print(request.FILES.get('pic').name + " IN SLOT " + request.POST.get('slot'))
 
     # test
-    print(request.user)
     if request.user.is_authenticated:
         print(request.user.username + '用户已登录')
     else:
@@ -45,8 +42,8 @@ def upload_img(request):
             for c in image.chunks():
                 pic.write(c)
         img_type = request.POST.get('type')
-        print(request.user.is_authenticated)
-        print(request.user.username)
+        # print(request.user.is_authenticated)
+        # print(request.user.username)
         if img_type:
             ClotheImage.objects.create(    #数据库插入语句
                 hash=hash_md5(image),
@@ -99,6 +96,7 @@ def tryon(request):
     # 思路三：生成的图片放数据库（看数据库那边的意思）
 
 def test(request):
+    print(request.session)
     if request.user.is_authenticated:
         print("已登录")
     return redirect('/')

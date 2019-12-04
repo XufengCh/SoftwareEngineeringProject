@@ -32,19 +32,19 @@ $(document).ready(function () {
     // 注意因为使用 next(), prev() 组件的前后次序很重要
     $(".upload-img").on("change", function () {
         var container = String($(this).parents('.photo-wrapper').parent().attr('id'));
-
+        
         let type = container.startsWith('clothe');
         let slot = Number(container.substring(container.length-1));
         let pic = this.files[0];
         let objUrl = getObjectURL(pic);
-
+        
         var formdata=new FormData();
         formdata.append('slot',slot);
         formdata.append('pic',pic);
         formdata.append('type',type);
         $img = $(this).prev('.figure-img');
-        console.log(pic, type, slot);
-
+        // console.log(pic, type, slot);
+        
         if (objUrl) {
             // 将图片路径存入src中，显示出图片
             $img.attr("src", objUrl); 
@@ -56,6 +56,10 @@ $(document).ready(function () {
                 type: "POST",
                 data: formdata,
                 dataType: "json",
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
                 processData: false,//用于对data参数进行序列化处理 这里必须false
                 contentType: false, //必须
                 success: function (data) {
