@@ -6,7 +6,7 @@ body {
 
 .photo-wrapper {
     position: relative;
-    width: 95%;
+    /* width: 95%; */
     /* padding-bottom: 110%; */
     background-color: rgb(255, 255, 255);
 }
