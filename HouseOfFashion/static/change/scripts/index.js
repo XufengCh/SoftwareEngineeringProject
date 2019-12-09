@@ -6,9 +6,25 @@ $(document).ready(function () {
     var body_selected = 0;
     var clothe_id;
     var body_id;
+    var type;
+    var slot;
+    var filename;
     // 用于规定可选栏位最大最小值的两个常量
     const clothe_max = 5;
     const body_max = 5;
+    // 初始化裁剪组件
+    $imageToCrop = $('#source-img');
+    $imageToCrop.cropper({  
+        aspectRatio : 4 / 5,// 默认比例  
+        guides: true, // 裁剪框的虚线(九宫格)  
+        zoomable : false,
+        minContainerWidth: 400,
+        minContainerHeight: 400,
+        crop : function(e) {  
+            // 输出结果数据裁剪图像。  
+        }  
+    });
+    
     // DEBUG: 在figure-img的on-click函数里调用这个函数会调用到爆栈
     // 原因不清楚先这么处理
     $('.upload-img').on('click', function (e) {
@@ -24,31 +40,67 @@ $(document).ready(function () {
     });
 
     // 用户上传图片结束后组件内容改变，调用getObjectURL()得到可用地址，替换与此组件相邻的图片的src属性
+    $(".upload-img").on("change", function () {
+        var container = String($(this).parents('.photo-wrapper').parent().attr('id'));
+        let pic = this.files[0];
+        console.log(pic);
+        let objUrl = getObjectURL(pic);
+        type = container.startsWith('clothe');
+        slot = Number(container.substring(container.length - 1));
+        filename = pic.name;
+
+        // 唤醒modal让用户进行图片裁剪,替换modal中的被裁减图片
+        $("#crop-modal").modal('show');
+        $imageToCrop.cropper('replace', objUrl);// 默认false，适应高度，不失真  
+        if (type) {
+            $('#clothe-'+clothe_selected).removeClass('selected');
+            $('#clothe-'+slot).addClass('selected');
+            clothe_selected = slot;
+        } else {
+            $('#body-'+body_selected).removeClass('selected');
+            $('#body-'+slot).addClass('selected');
+            body_selected = slot;
+        }
+    });
+
+    // 用户裁剪完成后按下确认执行
     // 替换成功后将该图片发送到服务器后端添加到数据库中
     // ajax 发送的数据字典：
     // pic对应用户上传的图片文件；
     // type为true则为衣服，false为半身像；
     // name为用户电脑上的图片文件名
-    // 注意因为使用 next(), prev() 组件的前后次序很重要
-    $(".upload-img").on("change", function () {
-        var container = String($(this).parents('.photo-wrapper').parent().attr('id'));
-        
-        let type = container.startsWith('clothe');
-        let slot = Number(container.substring(container.length-1));
-        let pic = this.files[0];
-        let objUrl = getObjectURL(pic);
-        
-        var formdata=new FormData();
-        formdata.append('slot',slot);
-        formdata.append('pic',pic);
-        formdata.append('type', type);
-        
-        $img = $(this).prev('.figure-img');
-        // console.log(pic, type, slot);
-        
-        if (objUrl) {
-            // 将图片路径存入src中，显示出图片
-            $img.attr("src", objUrl); 
+    $("#sure-cut-btn").on("click", function(){
+        if ($("#source-img").attr("src") == null) {  
+            return false;  
+        } else {  
+            var cas = $('#source-img').cropper('getCroppedCanvas');// 获取被裁剪后的canvas  
+            var pic = cas.toDataURL('image/jpeg'); // 转换为base64图片文件
+            // 重新创建一个新的FILE对象
+            data=pic.split(',')[1];
+            data=window.atob(data);
+            var ia = new Uint8Array(data.length);
+            for (var i = 0; i < data.length; i++) {
+                ia[i] = data.charCodeAt(i);
+            }
+            var croppedPic = new File([ia], filename, { type: "image/jpeg", endings: 'transparent' });
+            console.log(croppedPic);
+            // 选择器选出之前的那个图片框,用裁剪后的图片替换
+            var selector;
+            if (type) {
+                selector = '#clothe-' + slot + ' .figure-img';
+            } else {
+                selector = '#body-' + slot + ' .figure-img';
+            }
+            // console.log(selector);
+            $imageSlot = $(selector);
+            $imageSlot.attr("src", pic);// 显示图片
+            // 内容上传服务器
+            var formdata=new FormData();
+            formdata.append('slot',slot);
+            formdata.append('pic', croppedPic);
+            formdata.append('type', type);
+            formdata.append('filename', filename);
+            
             // 向服务器发送数据字典
             $.ajax({
                 // headers:{"X-CSRFtoken":$.cookie("csrftoken")},
@@ -65,20 +117,10 @@ $(document).ready(function () {
                 contentType: false, //必须
                 success: function (data) {
                     console.log(data.message);
-                    // console.log(pic.name + " 已成功保存到后端服务器");
                 }
             });
-        }
-        // 将被框选的图片更改为当前用户替换的
-        if (type) {
-            $('#clothe-'+clothe_selected).removeClass('selected');
-            $('#clothe-'+slot).addClass('selected');
-            clothe_selected = slot;
-        } else {
-            $('#body-'+body_selected).removeClass('selected');
-            $('#body-'+slot).addClass('selected');
-            body_selected = slot;
-        }
+            $('#crop-modal').modal('hide');
+        }  
     });
 
     //在点击左右按钮时切换当前选中的衣物/模特图片

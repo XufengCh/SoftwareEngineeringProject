@@ -15,17 +15,20 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css" crossorigin="anonymous">
     <link href="{% static 'change/styles/style.css' %}" rel="stylesheet" type="text/css">
     <!-- JAVASCRIPT -->
     <script crossorigin="anonymous" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-        src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js">
+    src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js">
         </script>
     <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js">
+    src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js">
         </script>
+    <script src="https://unpkg.com/cropperjs/dist/cropper.js" crossorigin="anonymous"></script>
+    <script src="{% static 'change/scripts/jquery-cropper.js' %}" crossorigin="anonymous"></script>
 </head>
 <script type="text/javascript" src="{% static 'change/scripts/index.js' %}"></script>
 <body background="{% static 'change/assets/background.png' %}">
@@ -244,6 +247,31 @@
             </div>
             
         </div>
+        
+        <!-- 用户裁剪上传图片弹窗 -->
+        <div class="modal fade" id="crop-modal" tabindex="-1" role="dialog" aria-labelledby="crop-modal-label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="crop-modal-label">裁剪您的图片</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row justify-content-center">
+                    <figure class="figure" style="margin-bottom: 0px; margin-right:10px;width:400px;">
+                        <img src="/" class="img-fluid rounded" style="max-width: 100%;" id="source-img">
+                    </figure>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                  <button type="button" class="btn btn-primary" id="sure-cut-btn">裁剪</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
         <!-- 用户确认提交图片弹窗 -->
         <div class="modal fade" id="submit-modal" tabindex="-1" role="dialog" aria-labelledby="submit-modal-label" aria-hidden="true">
@@ -267,7 +295,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                  <button type="button" class="btn btn-primary" id="send-btn">确认发送</button>
+                  <button type="button" class="btn btn-primary" id="send-btn">确认提交</button>
                 </div>
               </div>
             </div>
