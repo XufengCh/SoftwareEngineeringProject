@@ -120,10 +120,13 @@ def upload_img(request):
 # message(string)：前端弹出的信息
 # result(string)：返回CompositeImageObject.composite_image.url
 def generate(request):
-    print('[SERVER] GENERATE: CLOTH SLOT '+request.POST.get('cloth_slot'))
-    print('[SERVER] GENERATE: BODY SLOT' + request.POST.get('body_slot'))
+    clothe_slot = request.POST.get('cloth_slot')
+    body_slot = request.POST.get('body_slot')
+    print('[SERVER] GENERATE: CLOTH SLOT ' + clothe_slot)
+    print('[SERVER] GENERATE: BODY SLOT ' + body_slot)
     clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
     body = Body.objects.get(user=request.user, slot=body_slot)
+    results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
     # TODO: (1)检查是否已经生成 （2.1）若已生成返回图片地址 (2.2)若未生成则进行图片合成并存储在服务器上
     ret_dict = {'message': '[SERVER]图片合成已完成',
                 'result': '/static/change/assets/sample-ash.jpg'}
