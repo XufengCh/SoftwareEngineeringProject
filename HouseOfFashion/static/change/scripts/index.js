@@ -1,5 +1,6 @@
 const upload_url = "http://localhost:8000/images/upload_img";
 const generate_url = "http://localhost:8000/images/generate";
+const evaluate_url = "http://localhost:8000/images/evaluate";
 $(document).ready(function () {
     // 用于标识当前选中图片的两个变量
     var clothe_selected = 0;
@@ -9,6 +10,8 @@ $(document).ready(function () {
     var type;
     var slot;
     var filename;
+    // 保留结果两位小数
+    const roundup = 2;
     // 用于规定可选栏位最大最小值的两个常量
     const clothe_max = 5;
     const body_max = 5;
@@ -153,13 +156,10 @@ $(document).ready(function () {
 
     // 选择当前被选中的两张图片作为合成源
     // 在发送前先弹出窗口由用户确认
-    $('#generate-btn').click(function (e) { 
+    $('#generate-btn').on("click", function (e) { 
         e.preventDefault();
         var source_cloth = $('#clothe-'+clothe_selected).find('.figure-img').attr('src');
         var source_body = $('#body-'+body_selected).find('.figure-img').attr('src');
-        // TODO: 规定图片在数据库中的唯一标识
-        // cloth_id = source_cloth; // FOR NOW
-        // body_id = source_body; // FOR NOW
         
         var $modal = $('#submit-modal');
         $modal.modal('show');
@@ -167,13 +167,11 @@ $(document).ready(function () {
         source_cloth_pic.attr('src', source_cloth);
         var source_body_pic = $modal.find('#source-body');
         source_body_pic.attr('src', source_body);
-        // TODO: set width
-        // 现在先把宽度在html里面定死不改了
     });
 
    // 确认后将两张图片的标识发送给后端，并接收后端返回的合成结果
    // 用合成结果替换$('#display)中的图片
-    $('#send-btn').click(function () { 
+    $('#send-btn').on("click", function () { 
         // 向服务器发送数据字典
         let formdata = new FormData();
         formdata.append('cloth_slot', clothe_selected);
@@ -187,16 +185,44 @@ $(document).ready(function () {
             contentType: false,
             success: function (data) {
                 console.log(data.message);
-                $('#display img').attr('src', '/static/change/assets/sample-ash.jpg');
                 // TODO: 替换生成图片框中的图片
-                // console.log(data.result);
-                // $('#display img').attr('src', getObjectURL(data.result));
+                console.log(data.result);
+                $('#display img').attr('src', data.result);
             }
         });
         // 点击确认后关闭弹窗
         var $modal = $('#submit-modal');
         $modal.modal('hide');
     });
+
+    // 评价用户当前的合成结果
+    // 当前设计只能显示用户的一次合成结果，因此不需要发送任何参数，服务器查找用户最后一次合成记录即可
+    $('#eval-btn').on("click", function () {
+        console.log("eval-btn onclick");
+        $.ajax({
+            type: "GET",
+            url: evaluate_url,
+            success: function (response) {
+                console.log(response.message);
+                dot = String(response.score).indexOf(".");
+                score = String(response.score).substring(0, dot + roundup + 1);
+                $('#score').html(score);
+            }
+        });
+    });
+
+    // 用户与download-btn交互时执行，新建一个a节点触发click事件
+    $('#download-btn').on("click", function (param) {
+        var $download_img = $('#display img');
+        var url = $download_img.attr('src');
+        var a = document.createElement('a');
+        var event = new MouseEvent('click');
+        a.download = 'generated image';
+        a.href = url;
+        console.log(url);
+        a.dispatchEvent(event);
+    });
+
 });
 
 $(document).ajaxSend(function(event, jqxhr, settings) {

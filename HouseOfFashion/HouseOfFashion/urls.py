@@ -25,3 +25,8 @@ urlpatterns = [
     path('images/', include('images.urls')),
     path('users/', include('django.contrib.auth.urls')),
 ]
+
+from django.contrib.staticfiles.urls import static
+from HouseOfFashion import settings
+# 用于用户访问 media文件夹下的图片路径重定向
+urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

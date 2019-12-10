@@ -6,6 +6,7 @@ from images.models import *
 from images.img_process import hash_md5
 from .models import User
 import sqlite3
+import random
 import os
 
 # 如在上传图片时想要看到存在本地的图片请置为True
@@ -106,15 +107,29 @@ def upload_img(request):
 
 # 返回（json格式）：
 # message(string)：前端弹出的信息
-# result(file)：在前端展示的图片
-# NOTE: 也可以考虑返回服务器上生成图片的地址
+# result(stirng)：在前端展示的图片对应的服务器地址
+# NOTE: 这里可以只返回服务器上生成图片的地址
+# 需要修改数据库在数据库中留下用户的合成照片，这样可以不用把照片传到前端
+# 而且进行图片评价的时候前端也不用把图片文件发给后端
 def generate(request):
     print('clothSlotNumber: '+request.POST.get('cloth_slot'))
     print('bodySlotNumber: '+request.POST.get('body_slot'))
-    clothe_image=ClotheImage.image_file
-    ret_dict = {'message': '[SERVER]图片合成已完成'}
+    # clothe_image = ClotheImage.image_file
+    ret_dict = {'message': '[SERVER]图片合成已完成',
+                'result': '/static/change/assets/sample-ash.jpg'}
     return JsonResponse(ret_dict)
 
+# evaluate():
+# 评价用户当前的合成结果
+# 无传入参数，根据request.user进行数据库查找
+# 返回（json格式）：
+# message(string)：前端弹出的信息
+# score(number)：合成图片对应的评分，数据类型float？看评分函数实现，值域[0,100]
+def evaluate(request):
+    # 我先用随机数凑合一下
+    ret_dict = {'message': '[SERVER]评分结果已返回',
+                'score': random.random()*100}
+    return JsonResponse(ret_dict)
 
 # 试穿函数
 def tryon(request):

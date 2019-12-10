@@ -5,6 +5,7 @@ app_name = 'images'
 urlpatterns = [
     path('upload_img', views.upload_img, name='upload_img'),
     path('generate', views.generate, name='generate'),
+    path('evaluate', views.evaluate, name='evaluate'),
     path('tryon', views.tryon, name='tryon'),
     path('test', views.test, name='test')
 ]

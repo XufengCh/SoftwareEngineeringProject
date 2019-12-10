@@ -31,6 +31,41 @@
     <script src="{% static 'change/scripts/jquery-cropper.js' %}" crossorigin="anonymous"></script>
 </head>
 <script type="text/javascript" src="{% static 'change/scripts/index.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        {% if clothe0 %}
+        $('#clothe-0 img').attr("src", '{{ clothe0.image.image_file.url }}');
+        {% endif %}
+        {% if clothe1 %}
+        $('#clothe-1 img').attr("src", '{{ clothe1.image.image_file.url }}');
+        {% endif %}
+        {% if clothe2 %}
+        $('#clothe-2 img').attr("src", '{{ clothe2.image.image_file.url }}');
+        {% endif %}
+        {% if clothe3 %}
+        $('#clothe-3 img').attr("src", '{{ clothe3.image.image_file.url }}');
+        {% endif %}
+        {% if clothe4 %}
+        $('#clothe-4 img').attr("src", '{{ clothe4.image.image_file.url }}');
+        {% endif %}
+
+        {% if body0 %}
+        $('#body-0 img').attr("src", '{{ body0.image.image_file.url }}');
+        {% endif %}
+        {% if body1 %}
+        $('#body-1 img').attr("src", '{{ body1.image.image_file.url }}');
+        {% endif %}
+        {% if body2 %}
+        $('#body-2 img').attr("src", '{{ body2.image.image_file.url }}');
+        {% endif %}
+        {% if body3 %}
+        $('#body-3 img').attr("src", '{{ body3.image.image_file.url }}');
+        {% endif %}
+        {% if body4 %}
+        $('#body-4 img').attr("src", '{{ body4.image.image_file.url }}');
+        {% endif %}
+    });
+</script>
 <body background="{% static 'change/assets/background.png' %}">
     <nav class="navbar navbar-expand-lg navbar-light" id="navbarSelf">
         <a class="navbar-brand" href="#">
@@ -60,18 +95,18 @@
                     <a class="nav-link" href="#" style="color: #D0666F">注册</a>
                 </li> -->
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <p>欢迎，{{ user.username }}</p>
+                <li class="row nav-item align-content-center">
+                    <a class="nav-link" style="color: rgb(243, 119, 130); font-size: 15px;margin-right: 15px;">欢迎，{{ user.username }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}" style="color: #D0666F">退出</a>
+                    <a class="nav-link" href="{% url 'logout' %}" style="color: rgb(243, 119, 130)">退出</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="{% url 'images:test' %}" style="color: #D0666F">测试</a>
-                </li>
+                </li> -->
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}" style="color: #D0666F">登录</a>
+                    <a class="nav-link" href="{% url 'login' %}" style="color: rgb(243, 119, 130)">登录</a>
                 </li>
                 {% endif %}
             </ul>
@@ -86,18 +121,23 @@
                 <div class="photo-wrapper rounded m-2" id="display">
                     <figure class="figure" style="margin-bottom: 0px;">
                         <img src="{% static 'change/assets/sample-result.jpg' %}" class="figure-img img-fluid rounded"
-                            style="margin-bottom: 0px;" alt="返回您的图片生成结果">
+                            style="margin-bottom: 0px;" alt="您的图片生成结果">
                             <!-- 修正：主窗口不需要用户上传图片 -->
                         <!-- <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" /> -->
                         <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
                     </figure>
                 </div>
             </div>
-
+            <div class="row justify-content-center">
+                <div>评分：</div>
+                <strong id="score">尚未给出</strong>
+            </div>
             <div class="row justify-content-center">
                 <!-- button -->
-                <button class="btn btn-primary my-2" type="button" id="eval-btn"
-                onclick="alert('他摸了');">评分</button>
+                <button class="btn btn-primary my-2" type="button" id="eval-btn">评分</button>
+                <!-- 下载用户合成的图片 -->
+                <button class="btn btn-primary my-2" type="button" id="download-btn" title="下载合成图片">
+                    <i class="fas fa-file-download"></i></button>
             </div>
 
         </div>

@@ -92,3 +92,14 @@ body {
     background: #FDA59E;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
+
+#download-btn {
+    width: 56px;
+    height: 56px;
+    margin-left: 15px;
+    border-color: #FDA59E;
+    font-size: 25px;
+
+    background: #FDA59E;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}

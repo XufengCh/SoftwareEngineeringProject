@@ -138,8 +138,9 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 
 # store files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media\\')
-MEDIA_URL = os.path.join(BASE_DIR, 'media/')
+# DEBUG:: 之前访问不了图片可能和这里MEDIA_URL有关系，学着其他教程改了一下
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
 
 # ajax 传输需要，解决跨域方式
 CORS_ALLOW_CREDENTIALS = True
