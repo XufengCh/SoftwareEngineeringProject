@@ -104,7 +104,7 @@
                             style="margin-bottom: 0px;" alt="您的图片生成结果">
                             <!-- 修正：主窗口不需要用户上传图片 -->
                         <!-- <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" /> -->
-                        <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                        
                     </figure>
                 </div>
             </div>
@@ -114,7 +114,11 @@
             </div>
             <div class="row justify-content-center">
                 <!-- button -->
+                {% if user.is_authenticated %}
                 <button class="btn btn-primary my-2" type="button" id="eval-btn">评分</button>
+                {% else %}
+                <button class="btn btn-primary my-2" type="button" id="eval-btn" disabled>评分</button>
+                {% endif %}
                 <!-- 下载用户合成的图片 -->
                 <button class="btn btn-primary my-2" type="button" id="download-btn" title="下载合成图片">
                     <i class="fas fa-file-download"></i></button>
@@ -137,8 +141,12 @@
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-cloth.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
+                            {% if user.is_authenticated %}
                             <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                            {% else %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" onclick="alert('请先登录');" disabled/>
+                            {% endif %}
+                            
                         </figure>
                     </div>
                 </div>
@@ -148,8 +156,12 @@
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-cloth.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
+                            {% if user.is_authenticated %}
                             <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                            {% else %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" onclick="alert('请先登录');" disabled/>
+                            {% endif %}
+                            
                         </figure>
                     </div>
                 </div>
@@ -159,8 +171,12 @@
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-cloth.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
-                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                            {% if user.is_authenticated %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            {% else %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" onclick="alert('请先登录');" disabled/>
+                            {% endif %}   
+                            
                         </figure>
                     </div>
                 </div>
@@ -170,8 +186,12 @@
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-cloth.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
-                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                            {% if user.is_authenticated %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            {% else %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" onclick="alert('请先登录');" disabled/>
+                            {% endif %}    
+                            
                         </figure>
                     </div>
                 </div>
@@ -181,8 +201,12 @@
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-cloth.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
-                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                            {% if user.is_authenticated %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            {% else %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" onclick="alert('请先登录');" disabled/>
+                            {% endif %}   
+                            
                         </figure>
                     </div>
                 </div>
@@ -205,8 +229,12 @@
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-body.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
+                            {% if user.is_authenticated %}
                             <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                            {% else %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" onclick="alert('请先登录');" disabled/>
+                            {% endif %}
+                            
                         </figure>
                     </div>
                 </div>
@@ -216,8 +244,12 @@
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-body.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
+                            {% if user.is_authenticated %}
                             <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                            {% else %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" onclick="alert('请先登录');" disabled/>
+                            {% endif %}
+                            
                         </figure>
                     </div>
                 </div>
@@ -227,8 +259,12 @@
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-body.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
-                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                            {% if user.is_authenticated %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            {% else %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" onclick="alert('请先登录');" disabled/>
+                            {% endif %}   
+                            
                         </figure>
                     </div>
                 </div>
@@ -238,8 +274,12 @@
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-body.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
-                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                            {% if user.is_authenticated %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            {% else %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" onclick="alert('请先登录');" disabled/>
+                            {% endif %}   
+                            
                         </figure>
                     </div>
                 </div>
@@ -249,8 +289,12 @@
                         <figure class="figure" style="margin-bottom: 0px;">
                             <img src="{% static 'change/assets/sample-body.jpg' %}" class="figure-img img-fluid rounded"
                                 style="margin-bottom: 0px;" alt="用户图片">
-                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />    
-                            <!-- <figcaption class="figure-caption">A caption for the above image.</figcaption> -->
+                            {% if user.is_authenticated %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" />
+                            {% else %}
+                            <input class="upload-img" name="file" accept="image/*" type="file" style="display: none" onclick="alert('请先登录');" disabled/>
+                            {% endif %}    
+                            
                         </figure>
                     </div>
                 </div>
@@ -262,8 +306,12 @@
             </div>
 
             <div class="row justify-content-center">
+                {% if user.is_authenticated %}
                 <!-- <a name="" id="" class="btn btn-primary" href="#" role="button">合成</a> -->
                 <button class="btn btn-primary my-2" type="button" id="generate-btn">合成</button>
+                {% else %}
+                <button class="btn btn-primary my-2" type="button" id="generate-btn" disabled>合成</button>
+                {% endif %}
             </div>
             
         </div>

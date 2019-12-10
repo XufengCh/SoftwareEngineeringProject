@@ -24,11 +24,11 @@ SAVE_UPLOAD = False
 # 返回（json格式）：
 # message(string)：前端弹出的信息
 def upload_img(request):
-    # test
     # if request.user.is_authenticated:
     #     print(request.user.username + '用户已登录')
     # else:
-    #     print('LOGIN FAILED')
+    #     ret_dict = {'message': 'not authenticated'}
+    #     return JsonResponse(ret_dict)
     system_message = ''
     # 测试：可以正常地保存图片，存储目录 BASE_DIR\media\...
     image = request.FILES.get('pic')
