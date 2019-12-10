@@ -38,7 +38,7 @@ def upload_img(request):
     # 修改一下存图的文件名 “用户名-时分秒.文件类型”
     extension = str(image.name)[str(image.name).rfind('.'):]
     time_struct = time.localtime(time.time())
-    str_time = time.strftime("%H%M%S", time_struct)
+    str_time = time.strftime("%y%m%d%H%M%S", time_struct)
     str_username = request.user.username[:str(request.user.username).find('@')]
     fname = '%s%s-%s%s' % (settings.MEDIA_ROOT, str_username, str_time, extension)
     image.name = fname
