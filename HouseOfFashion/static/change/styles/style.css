@@ -5,6 +5,7 @@ body {
     /* 解决modal组件带来的padding-right问题 */
     padding-right: 0px !important;
 }
+
 *.modal-open {
     overflow-y: scroll;
     padding-right: 0 !important;

@@ -33,36 +33,16 @@
 <script type="text/javascript" src="{% static 'change/scripts/index.js' %}"></script>
 <script>
     $(document).ready(function () {
-        {% if clothe0 %}
-        $('#clothe-0 img').attr("src", '{{ clothe0.image.image_file.url }}');
+        {% if clothes %}
+        {% for clothe in clothes %}
+        $('#clothe-{{ clothe.slot }} img').attr("src", '{{ clothe.image.image_file.url }}')
+        {% endfor %}
         {% endif %}
-        {% if clothe1 %}
-        $('#clothe-1 img').attr("src", '{{ clothe1.image.image_file.url }}');
-        {% endif %}
-        {% if clothe2 %}
-        $('#clothe-2 img').attr("src", '{{ clothe2.image.image_file.url }}');
-        {% endif %}
-        {% if clothe3 %}
-        $('#clothe-3 img').attr("src", '{{ clothe3.image.image_file.url }}');
-        {% endif %}
-        {% if clothe4 %}
-        $('#clothe-4 img').attr("src", '{{ clothe4.image.image_file.url }}');
-        {% endif %}
-
-        {% if body0 %}
-        $('#body-0 img').attr("src", '{{ body0.image.image_file.url }}');
-        {% endif %}
-        {% if body1 %}
-        $('#body-1 img').attr("src", '{{ body1.image.image_file.url }}');
-        {% endif %}
-        {% if body2 %}
-        $('#body-2 img').attr("src", '{{ body2.image.image_file.url }}');
-        {% endif %}
-        {% if body3 %}
-        $('#body-3 img').attr("src", '{{ body3.image.image_file.url }}');
-        {% endif %}
-        {% if body4 %}
-        $('#body-4 img').attr("src", '{{ body4.image.image_file.url }}');
+        
+        {% if bodies %}
+        {% for body in bodies %}
+        $('#body-{{ body.slot }} img').attr("src", '{{ body.image.image_file.url }}')
+        {% endfor %}
         {% endif %}
     });
 </script>

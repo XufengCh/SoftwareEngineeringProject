@@ -198,7 +198,7 @@ $(document).ready(function () {
     // 评价用户当前的合成结果
     // 当前设计只能显示用户的一次合成结果，因此不需要发送任何参数，服务器查找用户最后一次合成记录即可
     $('#eval-btn').on("click", function () {
-        console.log("eval-btn onclick");
+        // console.log("eval-btn onclick");
         $.ajax({
             type: "GET",
             url: evaluate_url,
