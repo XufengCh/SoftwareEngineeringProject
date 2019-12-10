@@ -7,6 +7,7 @@ from images.img_process import hash_md5
 from .models import User
 import sqlite3
 import random
+import time
 import os
 
 # 如在上传图片时想要看到存在本地的图片请置为True
@@ -32,13 +33,20 @@ def upload_img(request):
     system_message = ''
     # 测试：可以正常地保存图片，存储目录 BASE_DIR\media\...
     image = request.FILES.get('pic')
-    fname = '%s%s' % (settings.MEDIA_ROOT, image.name)
     slot = request.POST.get('slot')
     img_type = request.POST.get('type') == 'true'
+    # 修改一下存图的文件名 “用户名-时分秒.文件类型”
+    extension = str(image.name)[str(image.name).rfind('.'):]
+    time_struct = time.localtime(time.time())
+    str_time = time.strftime("%H%M%S", time_struct)
+    str_username = request.user.username[:str(request.user.username).find('@')]
+    fname = '%s%s-%s%s' % (settings.MEDIA_ROOT, str_username, str_time, extension)
+    image.name = fname
+
     if img_type:
-        print(request.user.username + ": NEW IMAGE IN CLOTHE SLOT " + request.POST.get('slot'))
+        print(request.user.username + ": NEW IMAGE IN CLOTHE SLOT " + slot)
     else:
-        print(request.user.username + ": NEW IMAGE IN BODY SLOT " + request.POST.get('slot'))
+        print(request.user.username + ": NEW IMAGE IN BODY SLOT " + slot)
 
 
     # 可以存进数据库之后这块就不用执行了
@@ -63,7 +71,7 @@ def upload_img(request):
         # 删除用户在这个槽位上的记录
         try:
             Clothe.objects.get(slot=slot).delete()
-            print(request.user.username + ": DELETE OLD IMAGE IN CLOTHE SLOT " + request.POST.get('slot'))
+            print(request.user.username + ": DELETE OLD IMAGE IN CLOTHE SLOT " + slot)
         except Clothe.DoesNotExist:
             pass
         
@@ -84,7 +92,7 @@ def upload_img(request):
         # 删除用户在这个槽位上的记录
         try:
             Body.objects.get(slot=slot).delete()
-            print(request.user.username + ": DELETE OLD IMAGE IN BODY SLOT " + request.POST.get('slot'))
+            print(request.user.username + ": DELETE OLD IMAGE IN BODY SLOT " + slot)
         except Body.DoesNotExist:
             pass
         
