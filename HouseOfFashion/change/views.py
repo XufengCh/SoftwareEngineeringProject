@@ -12,6 +12,8 @@ def homepage(request):
     if request.user.is_authenticated:
         clothes = Clothe.objects.filter(user=request.user)      
         content['clothes'] = clothes
+        # 测试证实可以通过.url得到前端访问图片使用的地址
+        # print(clothes[0].image.image_file.url)
         bodies = Body.objects.filter(user=request.user)      
         content['bodies'] = bodies
     return render(request, 'change/index.html', content)

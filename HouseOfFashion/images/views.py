@@ -3,6 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from HouseOfFashion import settings
 from django.db import models
 from images.models import *
+from change.models import CompositeImage
 from images.img_process import hash_md5
 from .models import User
 import sqlite3
@@ -108,6 +109,8 @@ def upload_img(request):
 
 # generate():
 # 传入作为合成源的两张图片：衣物和用户的模特，调用对应接口进行图片生成并返回
+# 根据传入的两个槽号查找Cloth，Body表得到image文件
+# 再利用两个文件查找合成表，若记录存在则返回已有结果，记录不存在进行合成并插入新记录
 
 # 传入参数：
 # cloth_slot(int)：用户选择的衣物对应的唯一标识；通过request.POST.get('cloth')访问；
@@ -115,28 +118,44 @@ def upload_img(request):
 
 # 返回（json格式）：
 # message(string)：前端弹出的信息
-# result(stirng)：在前端展示的图片对应的服务器地址
-# NOTE: 这里可以只返回服务器上生成图片的地址
-# 需要修改数据库在数据库中留下用户的合成照片，这样可以不用把照片传到前端
-# 而且进行图片评价的时候前端也不用把图片文件发给后端
+# result(string)：返回CompositeImageObject.composite_image.url
 def generate(request):
-    print('clothSlotNumber: '+request.POST.get('cloth_slot'))
-    print('bodySlotNumber: '+request.POST.get('body_slot'))
-    # clothe_image = ClotheImage.image_file
+    print('[SERVER] GENERATE: CLOTH SLOT '+request.POST.get('cloth_slot'))
+    print('[SERVER] GENERATE: BODY SLOT' + request.POST.get('body_slot'))
+    clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
+    body = Body.objects.get(user=request.user, slot=body_slot)
+    # TODO: (1)检查是否已经生成 （2.1）若已生成返回图片地址 (2.2)若未生成则进行图片合成并存储在服务器上
     ret_dict = {'message': '[SERVER]图片合成已完成',
                 'result': '/static/change/assets/sample-ash.jpg'}
     return JsonResponse(ret_dict)
 
 # evaluate():
-# 评价用户当前的合成结果
-# 无传入参数，根据request.user进行数据库查找
+# 用户登录才能使用的功能
+# 根据传入的两个槽号查找Cloth，Body表得到image文件
+# 再利用两个文件查找合成表，若记录存在对合成图片进行评价并返回结果，记录不存在提醒用户先进行合成
+
+# 传入参数：
+# cloth_slot 用于合成该图片的衣物槽号
+# body_slot 用于合成该图片的姿态槽号
+
 # 返回（json格式）：
 # message(string)：前端弹出的信息
-# score(number)：合成图片对应的评分，数据类型float？看评分函数实现，值域[0,100]
+# score(string)：合成图片对应的评分
 def evaluate(request):
     # 我先用随机数凑合一下
-    ret_dict = {'message': '[SERVER]评分结果已返回',
-                'score': random.random()*100}
+    clothe_slot = request.POST.get('clothe_slot')
+    body_slot = request.POST.get('body_slot')
+    clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
+    body = Body.objects.get(user=request.user, slot=body_slot)
+    try:
+        results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
+        composite_image = results[0].composite_image # 如果表中没有对应记录会有 IndexOutOfRange
+        # TODO: 对生成图片进行评分 图片的前端访问地址为composite_image.url，要得到服务器上的地址需要进行MEDIA_URL -> MEDIA_ROOT的路径转换
+        score =  random.random()*100
+        ret_dict = {'message': '[SERVER]评分结果已返回',
+                'score': score}
+    except Exception:
+        ret_dict = {'message': 'not found'}
     return JsonResponse(ret_dict)
 
 # 试穿函数

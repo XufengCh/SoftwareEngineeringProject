@@ -9,4 +9,4 @@ class CompositeImage(models.Model):
     clothe_image = models.ForeignKey(to=ClotheImage, on_delete=models.CASCADE)
 
     composite_image = models.FileField(upload_to='composite-image/%Y/%m/%d')
-    score = models.CharField(max_length=10)
+    score = models.CharField(max_length=10, blank=True)

@@ -200,13 +200,23 @@ $(document).ready(function () {
     $('#eval-btn').on("click", function () {
         // console.log("eval-btn onclick");
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: evaluate_url,
+            dataType: "json",
+            data: {
+                'clothe_slot': clothe_selected,
+                'body_slot': body_selected
+            },
             success: function (response) {
                 console.log(response.message);
-                dot = String(response.score).indexOf(".");
-                score = String(response.score).substring(0, dot + roundup + 1);
-                $('#score').html(score);
+                if (response.message == 'not found') {
+                    alert("请先合成图片");
+                }
+                else {
+                    dot = String(response.score).indexOf(".");
+                    score = String(response.score).substring(0, dot + roundup + 1);
+                    $('#score').html(score);
+                }
             }
         });
     });
