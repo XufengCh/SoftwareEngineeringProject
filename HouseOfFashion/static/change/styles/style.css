@@ -2,6 +2,12 @@
 /* 这里为什么注释掉了？这里是用来做图片随窗口大小延展的 */
 body {
     background-size: cover;
+    /* 解决modal组件带来的padding-right问题 */
+    padding-right: 0px !important;
+}
+*.modal-open {
+    overflow-y: scroll;
+    padding-right: 0 !important;
 }
 
 .photo-wrapper {
