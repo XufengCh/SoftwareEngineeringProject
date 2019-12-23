@@ -1,3 +1,4 @@
+from django.core.files import File
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from HouseOfFashion import settings
@@ -5,11 +6,22 @@ from django.db import models
 from images.models import *
 from change.models import CompositeImage
 from images.img_process import hash_md5
+
+
 from .models import User
 import sqlite3
 import random
 import time
 import os
+import sys
+
+# sys.path.append('images/VirtualTryOn')
+#
+# from VirtualTryOn.try_on import *
+
+import cv2
+import numpy as np
+from PIL import Image
 
 # 如在上传图片时想要看到存在本地的图片请置为True
 SAVE_UPLOAD = False
@@ -126,10 +138,39 @@ def generate(request):
     print('[SERVER] GENERATE: BODY SLOT ' + body_slot)
     clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
     body = Body.objects.get(user=request.user, slot=body_slot)
+    # print(clothe)
+
     results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
     # TODO: (1)检查是否已经生成 （2.1）若已生成返回图片地址 (2.2)若未生成则进行图片合成并存储在服务器上
+    #调用函数合成 + 计算合成时间
+    #假设结果图片为res
+    if len(results) == 0:
+        # generate()
+        # 1 保存路径
+        clothe_img = Image.open(clothe.image.image_file)
+        body_img = Image.open(body.image.image_file)
+        clothe_img.save('images/VirtualTryOn/data/raw_data/cloth/000001_1.jpg')
+        body_img.save('images/VirtualTryOn/data/raw_data/image/000001_0.jpg')
+        # 2 调用合成函数
+        cur_dir = os.getcwd()
+        print(cur_dir)
+        os.chdir("images/VirtualTryOn/")
+        os.system("python try_on.py")
+        os.chdir(cur_dir)
+        #composite_(source_root_dir='data\\raw_data\\', target_root_dir='data\\test\\', imname='000001_0.jpg',
+                   #cname='000001_1.jpg')
+        # 3 从result路径读取结果
+        f = 'images/VirtualTryOn/result/000001_0.jpg'
+        comp_res = CompositeImage.objects.create(
+            body_image=body.image,
+            clothe_image=clothe.image,
+            composite_image=File(open(f, 'rb'))
+        )
+    else:
+        comp_res = results[0]
+
     ret_dict = {'message': '[SERVER]图片合成已完成',
-                'result': '/static/change/assets/sample-ash.jpg'}
+                'result': comp_res.composite_image.url}
     return JsonResponse(ret_dict)
 
 # evaluate():
@@ -144,21 +185,40 @@ def generate(request):
 # 返回（json格式）：
 # message(string)：前端弹出的信息
 # score(string)：合成图片对应的评分
+
+
+def image_colorfulness(image):
+    (B, G, R) = cv2.split(image.astype("float"))
+    rg = np.absolute(R - G)
+    yb = np.absolute(0.5 * (R + G) - B)
+    #平均值 标准差
+    (rbMean, rbStd) = (np.mean(rg), np.std(rg))
+    (ybMean, ybStd) = (np.mean(yb), np.std(yb))
+    std = np.sqrt((rbStd ** 2) + (ybStd ** 2))
+    mean = np.sqrt((rbMean ** 2) + (ybMean ** 2))
+    # 返回颜色丰富度C
+    return std + (0.3 * mean)
 def evaluate(request):
     # 我先用随机数凑合一下
     clothe_slot = request.POST.get('clothe_slot')
     body_slot = request.POST.get('body_slot')
     clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
     body = Body.objects.get(user=request.user, slot=body_slot)
-    try:
-        results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
-        composite_image = results[0].composite_image # 如果表中没有对应记录会有 IndexOutOfRange
-        # TODO: 对生成图片进行评分 图片的前端访问地址为composite_image.url，要得到服务器上的地址需要进行MEDIA_URL -> MEDIA_ROOT的路径转换
-        score =  random.random()*100
-        ret_dict = {'message': '[SERVER]评分结果已返回',
+    # try:
+    #     # results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
+    #     # composite_image = results[0].composite_image # 如果表中没有对应记录会有 IndexOutOfRange
+    #     # TODO: 对生成图片进行评分 图片的前端访问地址为composite_image.url，要得到服务器上的地址需要进行MEDIA_URL -> MEDIA_ROOT的路径转换
+    #     #score =  random.random()*100
+    #     composite_image = open('images/VirtualTryOn/result/000001_0.jpg')
+    #     score=image_colorfulness(composite_image)
+    #     ret_dict = {'message': '[SERVER]评分结果已返回',
+    #             'score': score}
+    # except Exception:
+    #     ret_dict = {'message': 'not found'}
+    composite_image = cv2.imread('images/VirtualTryOn/result/000001_0.jpg')
+    score = image_colorfulness(composite_image)
+    ret_dict = {'message': '[SERVER]评分结果已返回',
                 'score': score}
-    except Exception:
-        ret_dict = {'message': 'not found'}
     return JsonResponse(ret_dict)
 
 # 试穿函数

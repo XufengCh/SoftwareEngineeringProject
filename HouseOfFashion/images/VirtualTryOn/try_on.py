@@ -3,8 +3,10 @@ import cv2
 import json
 import os
 import sys
-sys.path.append('./cp_vton')
-sys.path.append('./LIP_JPPNet')
+
+sys.path.append(r'C:\Users\gnahc\Desktop\SoftwareEngineeringProject\HouseOfFashion\images\VirtualTryOn\cp_vton')
+sys.path.append(r'C:\Users\gnahc\Desktop\SoftwareEngineeringProject\HouseOfFashion\images\VirtualTryOn\LIP_JPPNet')
+
 
 from LIP_JPPNet.evaluate_parsing_JPPNet import *
 from cp_vton.test import *
