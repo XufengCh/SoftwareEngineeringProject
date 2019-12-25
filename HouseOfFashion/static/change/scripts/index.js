@@ -188,6 +188,9 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (data) {
+                if (data.message == 'not found') {
+                    alert("数据库中找不到选中图片，请尝试重新上传");
+                }
                 console.log(data.message);
                 console.log(data.result);
                 // 隐藏等待弹窗

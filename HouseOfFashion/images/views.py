@@ -21,6 +21,9 @@ from PIL import Image
 
 # 如在上传图片时想要看到存在本地的图片请置为True
 SAVE_UPLOAD = False
+CLOTH_PATH = 'images/VirtualTryOn/data/raw_data/cloth/000001_1.jpg'
+BODY_PATH = 'images/VirtualTryOn/data/raw_data/image/000001_0.jpg'
+RESULT_PATH = 'images/VirtualTryOn/result/000001_0.jpg'
 
 # upload_img():
 # 用户更替主页图片时主动将图片存储到服务器中,根据用户发送图片的类型（type）来决定保存到拿一张表中
@@ -132,45 +135,50 @@ def generate(request):
     body_slot = request.POST.get('body_slot')
     print('[SERVER] GENERATE: CLOTH SLOT ' + clothe_slot)
     print('[SERVER] GENERATE: BODY SLOT ' + body_slot)
-    clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
-    body = Body.objects.get(user=request.user, slot=body_slot)
-    # print(clothe)
+
+    try:
+        clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
+        body = Body.objects.get(user=request.user, slot=body_slot)
+        # print(clothe)
+    except (Clothe.DoesNotExist, Body.DoesNotExist):
+        ret_dict = {'message': 'not found'}
+        return JsonResponse(ret_dict)
 
     results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
     # (1)检查是否已经生成 （2.1）若已生成则直接从数据库中得到
     # (2.2)若未生成则先进行图片合成，存储在服务器上再存入数据库中
     # (3)返回图片地址
 
-    # NOTE: 因为我没有办法合成 先注释掉
-    # if len(results) == 0:
+    if len(results) == 0:
 
-    #     # 1 保存路径
-    #     clothe_img = Image.open(clothe.image.image_file)
-    #     body_img = Image.open(body.image.image_file)
-    #     clothe_img.save('images/VirtualTryOn/data/raw_data/cloth/000001_1.jpg')
-    #     body_img.save('images/VirtualTryOn/data/raw_data/image/000001_0.jpg')
+        # 1 保存路径
+        clothe_img = Image.open(clothe.image.image_file)
+        body_img = Image.open(body.image.image_file)
+        clothe_img.save(CLOTH_PATH)
+        body_img.save(BODY_PATH)
 
-    #     # 2 调用合成函数
-    #     cur_dir = os.getcwd()
-    #     print(cur_dir)
-    #     os.chdir("images/VirtualTryOn/")
-    #     os.system("python try_on.py")
-    #     os.chdir(cur_dir)
+        # 2 调用合成函数
+        cur_dir = os.getcwd()
+        print(cur_dir)
+        os.chdir("images/VirtualTryOn/")
+        os.system("python try_on.py")
+        os.chdir(cur_dir)
 
-    #     # 3 从result路径读取结果
-    #     f = 'images/VirtualTryOn/result/000001_0.jpg'
-    #     comp_res = CompositeImage.objects.create(
-    #         body_image=body.image,
-    #         clothe_image=clothe.image,
-    #         composite_image=File(open(f, 'rb'))
-    #     )
-    # else:
-    #     comp_res = results[0]
-    # NOTE: 模拟生成函数花费时间
-    time.sleep(1)
+        # 3 从result路径读取结果
+        f = RESULT_PATH
+        comp_res = CompositeImage.objects.create(
+            body_image=body.image,
+            clothe_image=clothe.image,
+            composite_image=File(open(f, 'rb'))
+        )
+    else:
+        # NOTE: 防止前端过快得到结果来不及隐藏waitModal
+        time.sleep(1)
+        comp_res = results[0]
+    
     ret_dict = {'message': '[SERVER]图片合成已完成 FINISHED!',
-                # 'result': comp_res.composite_image.url}
-                'result': '/static/change/assets/sample-ash.jpg'}
+                'result': comp_res.composite_image.url }
+                # 'result': '/static/change/assets/sample-ash.jpg'}
     return JsonResponse(ret_dict)
 
 # evaluate():
@@ -201,26 +209,27 @@ def image_colorfulness(image):
 
 
 def evaluate(request):
-    # 我先用随机数凑合一下
-    clothe_slot = request.POST.get('clothe_slot')
-    body_slot = request.POST.get('body_slot')
-    clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
-    body = Body.objects.get(user=request.user, slot=body_slot)
-    # try:
-    #     # results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
-    #     # composite_image = results[0].composite_image # 如果表中没有对应记录会有 IndexOutOfRange
-    #     # TODO: 对生成图片进行评分 图片的前端访问地址为composite_image.url，要得到服务器上的地址需要进行MEDIA_URL -> MEDIA_ROOT的路径转换
-    #     #score =  random.random()*100
-    #     composite_image = open('images/VirtualTryOn/result/000001_0.jpg')
-    #     score=image_colorfulness(composite_image)
-    #     ret_dict = {'message': '[SERVER]评分结果已返回',
-    #             'score': score}
-    # except Exception:
-    #     ret_dict = {'message': 'not found'}
-    composite_image = cv2.imread('images/VirtualTryOn/result/000001_0.jpg')
-    score = image_colorfulness(composite_image)
-    ret_dict = {'message': '[SERVER]评分结果已返回',
+    try:
+        clothe_slot = request.POST.get('clothe_slot')
+        body_slot = request.POST.get('body_slot')
+        clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
+        body = Body.objects.get(user=request.user, slot=body_slot)
+        results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
+        composite_image = results[0].composite_image  # 如果表中没有对应记录会有 IndexOutOfRange
+        # 先把用户合成记录最后一次的图片拿出来存到服务器上，再从服务器利用cv2.imread读入
+        composite_image.save(RESULT_PATH)
+        composite_image = cv2.imread(RESULT_PATH)
+        score=image_colorfulness(composite_image)
+        ret_dict = {'message': '[SERVER]评分结果已返回',
                 'score': score}
+    except Exception:
+        ret_dict = {'message': 'not found'}
+
+    # composite_image = cv2.imread(RESULT_PATH)
+    # score = image_colorfulness(composite_image)
+    # ret_dict = {'message': '[SERVER]评分结果已返回',
+    #             'score': score}
+
     return JsonResponse(ret_dict)
 
 # 试穿函数
