@@ -15,10 +15,6 @@ import time
 import os
 import sys
 
-# sys.path.append('images/VirtualTryOn')
-#
-# from VirtualTryOn.try_on import *
-
 import cv2
 import numpy as np
 from PIL import Image
@@ -141,36 +137,40 @@ def generate(request):
     # print(clothe)
 
     results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
-    # TODO: (1)检查是否已经生成 （2.1）若已生成返回图片地址 (2.2)若未生成则进行图片合成并存储在服务器上
-    #调用函数合成 + 计算合成时间
-    #假设结果图片为res
-    if len(results) == 0:
-        # generate()
-        # 1 保存路径
-        clothe_img = Image.open(clothe.image.image_file)
-        body_img = Image.open(body.image.image_file)
-        clothe_img.save('images/VirtualTryOn/data/raw_data/cloth/000001_1.jpg')
-        body_img.save('images/VirtualTryOn/data/raw_data/image/000001_0.jpg')
-        # 2 调用合成函数
-        cur_dir = os.getcwd()
-        print(cur_dir)
-        os.chdir("images/VirtualTryOn/")
-        os.system("python try_on.py")
-        os.chdir(cur_dir)
-        #composite_(source_root_dir='data\\raw_data\\', target_root_dir='data\\test\\', imname='000001_0.jpg',
-                   #cname='000001_1.jpg')
-        # 3 从result路径读取结果
-        f = 'images/VirtualTryOn/result/000001_0.jpg'
-        comp_res = CompositeImage.objects.create(
-            body_image=body.image,
-            clothe_image=clothe.image,
-            composite_image=File(open(f, 'rb'))
-        )
-    else:
-        comp_res = results[0]
+    # (1)检查是否已经生成 （2.1）若已生成则直接从数据库中得到
+    # (2.2)若未生成则先进行图片合成，存储在服务器上再存入数据库中
+    # (3)返回图片地址
 
-    ret_dict = {'message': '[SERVER]图片合成已完成',
-                'result': comp_res.composite_image.url}
+    # NOTE: 因为我没有办法合成 先注释掉
+    # if len(results) == 0:
+
+    #     # 1 保存路径
+    #     clothe_img = Image.open(clothe.image.image_file)
+    #     body_img = Image.open(body.image.image_file)
+    #     clothe_img.save('images/VirtualTryOn/data/raw_data/cloth/000001_1.jpg')
+    #     body_img.save('images/VirtualTryOn/data/raw_data/image/000001_0.jpg')
+
+    #     # 2 调用合成函数
+    #     cur_dir = os.getcwd()
+    #     print(cur_dir)
+    #     os.chdir("images/VirtualTryOn/")
+    #     os.system("python try_on.py")
+    #     os.chdir(cur_dir)
+
+    #     # 3 从result路径读取结果
+    #     f = 'images/VirtualTryOn/result/000001_0.jpg'
+    #     comp_res = CompositeImage.objects.create(
+    #         body_image=body.image,
+    #         clothe_image=clothe.image,
+    #         composite_image=File(open(f, 'rb'))
+    #     )
+    # else:
+    #     comp_res = results[0]
+    # NOTE: 模拟生成函数花费时间
+    time.sleep(1)
+    ret_dict = {'message': '[SERVER]图片合成已完成 FINISHED!',
+                # 'result': comp_res.composite_image.url}
+                'result': '/static/change/assets/sample-ash.jpg'}
     return JsonResponse(ret_dict)
 
 # evaluate():
@@ -198,6 +198,8 @@ def image_colorfulness(image):
     mean = np.sqrt((rbMean ** 2) + (ybMean ** 2))
     # 返回颜色丰富度C
     return std + (0.3 * mean)
+
+
 def evaluate(request):
     # 我先用随机数凑合一下
     clothe_slot = request.POST.get('clothe_slot')

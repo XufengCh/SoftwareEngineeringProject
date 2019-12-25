@@ -4,9 +4,12 @@
 现在很多id和class名都和函数选择器绑定，不确定情况下尽量不要改  
 负责后端开发的同学实现HouseOfFashion\images\views.py这个文件中的upload_img()和generate()两个函数
 
-要求python3以上  
+要求python版本3.7 
 基于bootstrap4.0  
 **pip install django-cors-headers**  
+pip install numpy  
+pip install opencv-python  
+pip install pillow  
 组件使用手册 https://getbootstrap.com/docs/4.0/components/alerts/  
 据说在网站上看到的css格式比较准我之后再改  
 
