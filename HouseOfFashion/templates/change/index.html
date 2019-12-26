@@ -61,14 +61,14 @@
         <div class="collapse navbar-collapse" id="navbarMainBody">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">首页</a>
+                    <a class="nav-link" href="#">在线试穿</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="#">在线试穿</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">搭配广场</a>
-                </li>
+                </li> -->
             </ul>
             <ul class="navbar-nav">
                 <!-- <li class="nav-item">
@@ -343,7 +343,7 @@
       </div>
 
     <!-- 用户确认提交图片弹窗 -->
-    <div class="modal fade" id="submit-modal" tabindex="-1" role="dialog" aria-labelledby="submit-modal-label" aria-hidden="true">
+    <div class="modal fade" id="submit-modal" tabindex="-1" role="dialog" aria-labelledby="submit-modal-label" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -365,6 +365,25 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
               <button type="button" class="btn btn-primary" id="send-btn">确认提交</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 用户提交图片后等待弹窗 -->
+    <div class="modal fade" id="wait-modal" tabindex="-1" role="dialog" aria-labelledby="wait-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header justify-content-center">
+              <h5 class="modal-title text-center" id="wait-modal-label" style="font-weight: 700;letter-spacing: 7px;">
+                图片合成中请稍等</h5>
+            </div>
+            <div class="modal-body" style="padding-top: 0px;padding-bottom: 0px;">
+              <div class="row justify-content-center">
+                <figure class="figure" style="margin:0px">
+                    <img src="{% static 'change/assets/loading.gif' %}" class="img-fluid rounded">
+                </figure>
+              </div>
             </div>
           </div>
         </div>

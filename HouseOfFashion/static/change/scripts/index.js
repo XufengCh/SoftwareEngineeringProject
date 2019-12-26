@@ -15,14 +15,19 @@ $(document).ready(function () {
     // 用于规定可选栏位最大最小值的两个常量
     const clothe_max = 5;
     const body_max = 5;
+
+    var $submitModal = $('#submit-modal');
+    var $waitModal = $('#wait-modal');
     // 初始化裁剪组件
     $imageToCrop = $('#source-img');
-    $imageToCrop.cropper({  
+    $imageToCrop.cropper({
         aspectRatio : 4 / 5,// 默认比例  
         guides: true, // 裁剪框的虚线(九宫格)  
         zoomable : false,
         minContainerWidth: 400,
         minContainerHeight: 400,
+        // 默认选择符合尺寸的最大区域
+        autoCropArea : 1,
         crop : function(e) {  
             // 输出结果数据裁剪图像。  
         }  
@@ -161,11 +166,10 @@ $(document).ready(function () {
         var source_cloth = $('#clothe-'+clothe_selected).find('.figure-img').attr('src');
         var source_body = $('#body-'+body_selected).find('.figure-img').attr('src');
         
-        var $modal = $('#submit-modal');
-        $modal.modal('show');
-        var source_cloth_pic = $modal.find('#source-cloth');
+        $submitModal.modal({backdrop:'static', keyboard: false});
+        var source_cloth_pic = $submitModal.find('#source-cloth');
         source_cloth_pic.attr('src', source_cloth);
-        var source_body_pic = $modal.find('#source-body');
+        var source_body_pic = $submitModal.find('#source-body');
         source_body_pic.attr('src', source_body);
     });
 
@@ -184,15 +188,21 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (data) {
+                if (data.message == 'not found') {
+                    alert("数据库中找不到选中图片，请尝试重新上传");
+                }
                 console.log(data.message);
-                // TODO: 替换生成图片框中的图片
                 console.log(data.result);
+                // 隐藏等待弹窗
                 $('#display img').attr('src', data.result);
+                $waitModal.modal('hide');
             }
         });
-        // 点击确认后关闭弹窗
-        var $modal = $('#submit-modal');
-        $modal.modal('hide');
+        console.log("[CLIENT]图片合成ajax请求已发送，WAITING...");
+        // 点击确认后关闭提交弹窗，显示等待弹窗
+        // ajax请求发出，图片合成时的加载动画 or 标志，让用户知道合成在进行
+        $submitModal.modal('hide');
+        $waitModal.modal({backdrop:'static', keyboard: false});
     });
 
     // 评价用户当前的合成结果
@@ -235,12 +245,11 @@ $(document).ready(function () {
 
 });
 
-$(document).ajaxSend(function(event, jqxhr, settings) {
-    if ( settings.url == generate_url ) {
-        console.log("[CLIENT]图片合成ajax请求已发送");
-        // TODO: ajax请求发出，图片合成时的加载动画 or 标志，让用户知道合成在进行
-    }
-  });
+// $(document).ajaxSend(function(event, jqxhr, settings) {
+//     if ( settings.url == generate_url ) {
+//         console.log("[CLIENT]图片合成ajax请求已发送，WAITING...");
+//     }
+//   });
 
 //获取图片的路径，该路径不是图片在本地的路径
 function getObjectURL(file) {
