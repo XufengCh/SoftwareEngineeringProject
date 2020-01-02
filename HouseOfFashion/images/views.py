@@ -14,6 +14,7 @@ import random
 import time
 import os
 import sys
+import math
 
 import cv2
 import numpy as np
@@ -205,30 +206,49 @@ def image_colorfulness(image):
     std = np.sqrt((rbStd ** 2) + (ybStd ** 2))
     mean = np.sqrt((rbMean ** 2) + (ybMean ** 2))
     # 返回颜色丰富度C
-    return std + (0.3 * mean)
+    return math.sqrt(math.sqrt(std + (0.3 * mean)) * 10) * 10
 
 
 def evaluate(request):
+    clothe_slot = request.POST.get('clothe_slot')
+    body_slot = request.POST.get('body_slot')
+    clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
+    body = Body.objects.get(user=request.user, slot=body_slot)
+    results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
+    composite_image = Image.open(results[0].composite_image)  # 如果表中没有对应记录会有 IndexOutOfRange
+    # 先把用户合成记录最后一次的图片拿出来存到服务器上，再从服务器利用cv2.imread读入
+    print('**********')
+    print(composite_image)
+    composite_image.save(RESULT_PATH)
+    print('1**********')
+    composite_image = cv2.imread(RESULT_PATH)
+    print('2**********')
+    score = image_colorfulness(composite_image)
+    print(score)
+    print('3**********')
+    ret_dict = {'message': '[SERVER]评分结果已返回',
+                'score': score}
     try:
         clothe_slot = request.POST.get('clothe_slot')
         body_slot = request.POST.get('body_slot')
         clothe = Clothe.objects.get(user=request.user, slot=clothe_slot)
         body = Body.objects.get(user=request.user, slot=body_slot)
         results = CompositeImage.objects.filter(clothe_image=clothe.image, body_image=body.image)
-        composite_image = results[0].composite_image  # 如果表中没有对应记录会有 IndexOutOfRange
+        composite_image = Image.open(results[0].composite_image)  # 如果表中没有对应记录会有 IndexOutOfRange
         # 先把用户合成记录最后一次的图片拿出来存到服务器上，再从服务器利用cv2.imread读入
+        print('**********')
+        print(composite_image)
         composite_image.save(RESULT_PATH)
+        print('1**********')
         composite_image = cv2.imread(RESULT_PATH)
-        score=image_colorfulness(composite_image)
+        print('2**********')
+        score = image_colorfulness(composite_image)
+        print(score)
+        print('3**********')
         ret_dict = {'message': '[SERVER]评分结果已返回',
                 'score': score}
     except Exception:
         ret_dict = {'message': 'not found'}
-
-    # composite_image = cv2.imread(RESULT_PATH)
-    # score = image_colorfulness(composite_image)
-    # ret_dict = {'message': '[SERVER]评分结果已返回',
-    #             'score': score}
 
     return JsonResponse(ret_dict)
 
